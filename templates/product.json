@@ -12,12 +12,6 @@
     "main": {
       "type": "product",
       "blocks": {
-        "shop_the_look_chBPVF": {
-          "type": "shop_the_look",
-          "settings": {
-            "heading": "Shop the Look"
-          }
-        },
         "title": {
           "type": "title",
           "settings": {
@@ -52,6 +46,12 @@
             "enable_payment_button": false,
             "subscriptions_enable_selectors": false,
             "info_page": ""
+          }
+        },
+        "shop_the_look_chBPVF": {
+          "type": "shop_the_look",
+          "settings": {
+            "heading": "Shop the Look"
           }
         },
         "icon-1": {
@@ -116,11 +116,11 @@
         }
       },
       "block_order": [
-        "shop_the_look_chBPVF",
         "title",
         "siblings",
         "2bd6e6f9-9c4b-4087-9249-bfcfa21467c4",
         "form",
+        "shop_the_look_chBPVF",
         "icon-1",
         "icon-2",
         "description",
