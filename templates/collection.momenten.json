@@ -1,0 +1,96 @@
+{
+  "sections": {
+    "section_hero_38qGw9": {
+      "type": "section-hero",
+      "blocks": {
+        "heading_ajUNVz": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>{{ collection.title }}</p>",
+            "text_size": 10
+          }
+        },
+        "text_P79TCp": {
+          "type": "text",
+          "settings": {
+            "text": "{{ collection.description }}",
+            "text_size": 6,
+            "text_columns": 1
+          }
+        }
+      },
+      "block_order": ["heading_ajUNVz", "text_P79TCp"],
+      "name": "Image banner",
+      "settings": {
+        "image": "{{ collection.image }}",
+        "mobile_image": "{{ collection.image }}",
+        "image_link": "",
+        "bg_position": "center-center",
+        "height": "use_screen_one_third",
+        "overlay_opacity": 15,
+        "overlay_color": "#000000",
+        "flex_align": "align--middle-left",
+        "align_text": "text-left",
+        "color": "text--white",
+        "color_bg": "hero__content--transparent",
+        "width": "wrapper--none",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "banner": {
+      "type": "collection-banner",
+      "blocks": {
+        "collections": {
+          "type": "heading",
+          "settings": {
+            "text_size": 9
+          }
+        },
+        "filters": {
+          "type": "text",
+          "settings": {
+            "text_size": 5
+          }
+        }
+      },
+      "block_order": ["collections", "filters"],
+      "disabled": true,
+      "settings": {
+        "flex_align": "align--middle-left",
+        "show_title_below": false,
+        "show_description_below": false,
+        "show_image": true,
+        "bg_position": "center-center",
+        "image_height": "use_screen_one_fifth",
+        "overlay_opacity": 20,
+        "overlay_color": "#000000",
+        "color": "text--white",
+        "color_bg": "hero__content--transparent",
+        "width": "wrapper--none",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "collection",
+      "settings": {
+        "bg": "palette--light bg--neutral",
+        "pagination_count": 16,
+        "grid_setting_large": 4,
+        "grid_setting_medium": 2,
+        "grid_setting_small": 2,
+        "show_collection_nav": false,
+        "collection_custom_nav_list": "",
+        "align_nav": "inline-nav",
+        "collection_sorting": true,
+        "filters": true,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 64
+      }
+    }
+  },
+  "order": ["section_hero_38qGw9", "banner", "main"]
+}
+
