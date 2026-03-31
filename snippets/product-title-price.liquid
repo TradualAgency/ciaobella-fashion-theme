@@ -3,6 +3,20 @@
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
 <div class="product__headline {{ classes }}" {{ block.shopify_attributes }}>
+  {% if template contains 'product' %}
+    <nav class="product__breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      {% if collection %}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+      {% else %}
+        <a href="{{ routes.all_products_collection_url }}">{{ 'collections.general.all_products' | t | default: 'Producten' }}</a>
+      {% endif %}
+      <span aria-hidden="true">/</span>
+      <span>{{ product.title | strip_html }}</span>
+    </nav>
+  {% endif %}
+
   {% if block.settings.product_show_vendor %}
     <div class="product__subheading">
       <p>
