@@ -1,0 +1,347 @@
+<!-- /snippets/shop-the-look.liquid -->
+
+{%- liquid
+  assign shop_the_look_products = product.metafields.custom.shop_the_look.value
+  assign has_shop_the_look = false
+
+  if shop_the_look_products != blank
+    for look_product in shop_the_look_products
+      if look_product != blank and look_product.selected_or_first_available_variant != nil
+        assign has_shop_the_look = true
+        break
+      endif
+    endfor
+  endif
+-%}
+
+{%- if has_shop_the_look -%}
+  <div
+    class="shop-the-look"
+    data-shop-the-look
+    data-add-to-cart-text="{{ 'products.product.add_to_cart' | t | escape }}"
+    data-sold-out-text="{{ 'products.product.sold_out' | t | escape }}"
+    data-unavailable-text="{{ 'products.product.item_unavailable' | t | escape }}"
+    {{ block.shopify_attributes }}>
+    <h3 class="shop-the-look__heading">{{ block.settings.heading | default: 'Shop the Look' }}</h3>
+
+    <div class="shop-the-look__list">
+      {%- for look_product in shop_the_look_products -%}
+        {%- liquid
+          assign selected_variant = look_product.selected_or_first_available_variant
+        -%}
+
+        {%- if look_product != blank and selected_variant != nil -%}
+          {%- liquid
+            assign product_color = ''
+            assign color_option_index = blank
+
+            for option in look_product.options_with_values
+              assign option_name = option.name | strip | downcase
+              if option_name == 'kleur' or option_name == 'color'
+                assign color_option_index = forloop.index0
+                assign product_color = selected_variant.options[color_option_index]
+                break
+              endif
+            endfor
+
+            if product_color == blank and look_product.metafields.theme.cutline != blank and look_product.metafields.theme.cutline.type == 'single_line_text_field'
+              assign product_color = look_product.metafields.theme.cutline.value
+            endif
+
+            if product_color == blank and look_product.options.size > 1
+              assign product_color = selected_variant.options[0]
+            endif
+
+            assign use_radio_selector = false
+            if look_product.has_only_default_variant == false and look_product.options_with_values.size == 1
+              assign longest_value = 0
+              for value in look_product.options_with_values[0].values
+                if value.size > longest_value
+                  assign longest_value = value.size
+                endif
+              endfor
+
+              if longest_value < 8
+                assign use_radio_selector = true
+              endif
+            endif
+
+            assign button_text = 'products.product.add_to_cart' | t
+            if selected_variant.available == false
+              assign button_text = 'products.product.sold_out' | t
+            endif
+          -%}
+
+          <article class="shop-the-look__card" data-shop-the-look-card>
+            <a class="shop-the-look__image-link" href="{{ look_product.url }}">
+              {%- assign look_product_image = look_product.featured_media.preview_image -%}
+              {%- if look_product_image -%}
+                <img
+                  class="shop-the-look__image"
+                  loading="lazy"
+                  src="{{ look_product_image.src | img_url: '240x300', crop: 'center' }}"
+                  alt="{{ look_product_image.alt | default: look_product.title | strip_html | escape }}"
+                  width="120"
+                  height="150">
+              {%- else -%}
+                <div class="shop-the-look__image shop-the-look__image--placeholder"></div>
+              {%- endif -%}
+            </a>
+
+            <div class="shop-the-look__content">
+              <p class="shop-the-look__title">
+                <a href="{{ look_product.url }}">{{ look_product.title | strip_html }}</a>
+              </p>
+
+              <p class="shop-the-look__color{% if product_color == blank %} is-hidden{% endif %}" data-shop-the-look-color-row>
+                <span class="shop-the-look__color-label">Kleur:</span>
+                <span data-shop-the-look-color>{{ product_color }}</span>
+              </p>
+
+              <p class="shop-the-look__price-row">
+                <span
+                  class="shop-the-look__price{% if selected_variant.compare_at_price > selected_variant.price %} product__price--sale{% endif %}"
+                  data-shop-the-look-price>{{ settings.currency_code_enable | default: false | json }}{% if settings.currency_code_enable %}{{ selected_variant.price | money_with_currency }}{% else %}{{ selected_variant.price | money }}{% endif %}</span>
+                <span
+                  class="shop-the-look__compare{% unless selected_variant.compare_at_price > selected_variant.price %} is-hidden{% endunless %}"
+                  data-shop-the-look-compare-wrapper>
+                  <span data-shop-the-look-compare-price>
+                    {% if settings.currency_code_enable %}
+                      {{ selected_variant.compare_at_price | money_with_currency }}
+                    {% else %}
+                      {{ selected_variant.compare_at_price | money }}
+                    {% endif %}
+                  </span>
+                </span>
+              </p>
+
+              <form action="{{ routes.cart_add_url }}" method="post" class="shop-the-look__form">
+                <input type="hidden" name="id" value="{{ selected_variant.id }}" data-shop-the-look-variant-id>
+                <input type="hidden" name="quantity" value="1">
+
+                {%- unless look_product.has_only_default_variant -%}
+                  <div class="shop-the-look__selector">
+                    {%- if use_radio_selector -%}
+                      <div class="shop-the-look__chips" role="radiogroup" aria-label="{{ look_product.options_with_values[0].name | escape }}">
+                        {%- for variant in look_product.variants -%}
+                          {%- assign chip_id = 'shop-the-look-' | append: block.id | append: '-' | append: look_product.id | append: '-' | append: variant.id -%}
+                          <label class="shop-the-look__chip">
+                            <input
+                              type="radio"
+                              name="shop-the-look-{{ look_product.id }}"
+                              value="{{ variant.id }}"
+                              data-shop-the-look-input
+                              id="{{ chip_id }}"
+                              {% if variant.id == selected_variant.id %}checked{% endif %}
+                              {% unless variant.available %}disabled{% endunless %}>
+                            <span>{{ variant.options[0] }}</span>
+                          </label>
+                        {%- endfor -%}
+                      </div>
+                    {%- else -%}
+                      <label class="visually-hidden" for="shop-the-look-select-{{ block.id }}-{{ look_product.id }}">
+                        {{ 'products.product.add_to_cart' | t }}
+                      </label>
+                      <div class="select__fieldset">
+                        <select
+                          class="shop-the-look__select"
+                          id="shop-the-look-select-{{ block.id }}-{{ look_product.id }}"
+                          data-shop-the-look-select>
+                          {%- for variant in look_product.variants -%}
+                            <option
+                              value="{{ variant.id }}"
+                              {% if variant.id == selected_variant.id %}selected{% endif %}
+                              {% unless variant.available %}disabled{% endunless %}>
+                              {%- if look_product.options_with_values.size == 1 -%}
+                                {{ variant.options[0] }}
+                              {%- else -%}
+                                {{ variant.title }}
+                              {%- endif -%}
+                              {%- unless variant.available -%} - {{ 'products.product.sold_out' | t }}{%- endunless -%}
+                            </option>
+                          {%- endfor -%}
+                        </select>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endunless -%}
+
+                <div class="shop-the-look__actions" data-add-action-wrapper>
+                  <div data-add-action-errors class="shop-the-look__errors"></div>
+
+                  <button
+                    type="submit"
+                    class="btn btn--primary shop-the-look__button"
+                    data-add-to-cart
+                    {% unless selected_variant.available %}disabled{% endunless %}>
+                    <span class="btn-state-ready">
+                      <span data-shop-the-look-button-text>{{ button_text }}</span>
+                    </span>
+
+                    <span class="btn-state-loading">
+                      <svg height="18" width="18" class="svg-loader">
+                        <circle r="7" cx="9" cy="9" />
+                        <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
+                      </svg>
+                    </span>
+
+                    <span class="btn-state-complete">&nbsp;</span>
+                  </button>
+                </div>
+
+                <script type="application/json" data-shop-the-look-variants>
+                  [
+                    {%- for variant in look_product.variants -%}
+                      {%- liquid
+                        assign variant_color = ''
+
+                        if color_option_index != blank
+                          assign variant_color = variant.options[color_option_index]
+                        endif
+
+                        if variant_color == blank and look_product.metafields.theme.cutline != blank and look_product.metafields.theme.cutline.type == 'single_line_text_field'
+                          assign variant_color = look_product.metafields.theme.cutline.value
+                        endif
+
+                        if variant_color == blank and look_product.options.size > 1
+                          assign variant_color = variant.options[0]
+                        endif
+                      -%}
+                      {%- capture variant_price -%}
+                        {%- if settings.currency_code_enable -%}
+                          {{ variant.price | money_with_currency }}
+                        {%- else -%}
+                          {{ variant.price | money }}
+                        {%- endif -%}
+                      {%- endcapture -%}
+                      {%- capture variant_compare_price -%}
+                        {%- if variant.compare_at_price > variant.price -%}
+                          {%- if settings.currency_code_enable -%}
+                            {{ variant.compare_at_price | money_with_currency }}
+                          {%- else -%}
+                            {{ variant.compare_at_price | money }}
+                          {%- endif -%}
+                        {%- endif -%}
+                      {%- endcapture -%}
+                      {
+                        "id": {{ variant.id | json }},
+                        "available": {{ variant.available | json }},
+                        "color": {{ variant_color | strip | json }},
+                        "price_formatted": {{ variant_price | strip | json }},
+                        "compare_at_price_formatted": {{ variant_compare_price | strip | json }},
+                        "has_compare_price": {{ variant.compare_at_price > variant.price | json }}
+                      }{% unless forloop.last %},{% endunless %}
+                    {%- endfor -%}
+                  ]
+                </script>
+              </form>
+            </div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.currentScript.previousElementSibling;
+
+      if (!root || root.dataset.shopTheLookReady === 'true') {
+        return;
+      }
+
+      root.dataset.shopTheLookReady = 'true';
+
+      const addToCartText = root.dataset.addToCartText || 'Add to cart';
+      const soldOutText = root.dataset.soldOutText || 'Sold out';
+      const unavailableText = root.dataset.unavailableText || 'Unavailable';
+
+      const updateCard = (card, variantId) => {
+        let variants = card.shopTheLookVariants;
+
+        if (!variants) {
+          const variantJson = card.querySelector('[data-shop-the-look-variants]');
+
+          try {
+            variants = JSON.parse(variantJson.textContent);
+          } catch (error) {
+            variants = [];
+          }
+
+          card.shopTheLookVariants = variants;
+        }
+
+        const variant = variants.find((item) => String(item.id) === String(variantId));
+        const variantIdInput = card.querySelector('[data-shop-the-look-variant-id]');
+        const colorRow = card.querySelector('[data-shop-the-look-color-row]');
+        const colorValue = card.querySelector('[data-shop-the-look-color]');
+        const priceValue = card.querySelector('[data-shop-the-look-price]');
+        const compareWrapper = card.querySelector('[data-shop-the-look-compare-wrapper]');
+        const compareValue = card.querySelector('[data-shop-the-look-compare-price]');
+        const button = card.querySelector('[data-add-to-cart]');
+        const buttonText = card.querySelector('[data-shop-the-look-button-text]');
+
+        if (!variant || !variantIdInput || !button || !buttonText) {
+          if (button) {
+            button.disabled = true;
+          }
+
+          if (buttonText) {
+            buttonText.textContent = unavailableText;
+          }
+
+          return;
+        }
+
+        variantIdInput.value = variant.id;
+        button.disabled = !variant.available;
+        buttonText.textContent = variant.available ? addToCartText : soldOutText;
+
+        if (colorRow && colorValue) {
+          if (variant.color) {
+            colorRow.classList.remove('is-hidden');
+            colorValue.textContent = variant.color;
+          } else {
+            colorRow.classList.add('is-hidden');
+            colorValue.textContent = '';
+          }
+        }
+
+        if (priceValue) {
+          priceValue.textContent = variant.price_formatted || '';
+          priceValue.classList.toggle('product__price--sale', Boolean(variant.has_compare_price));
+        }
+
+        if (compareWrapper && compareValue) {
+          compareValue.textContent = variant.compare_at_price_formatted || '';
+          compareWrapper.classList.toggle('is-hidden', !variant.has_compare_price);
+        }
+      };
+
+      root.querySelectorAll('[data-shop-the-look-card]').forEach((card) => {
+        const select = card.querySelector('[data-shop-the-look-select]');
+        const radioInputs = card.querySelectorAll('[data-shop-the-look-input]');
+        const variantIdInput = card.querySelector('[data-shop-the-look-variant-id]');
+        const initialValue = select ? select.value : card.querySelector('[data-shop-the-look-input]:checked')?.value || variantIdInput?.value;
+
+        if (select) {
+          select.addEventListener('change', (event) => {
+            updateCard(card, event.target.value);
+          });
+        }
+
+        radioInputs.forEach((input) => {
+          input.addEventListener('change', (event) => {
+            if (event.target.checked) {
+              updateCard(card, event.target.value);
+            }
+          });
+        });
+
+        if (initialValue) {
+          updateCard(card, initialValue);
+        }
+      });
+    })();
+  </script>
+{%- endif -%}
