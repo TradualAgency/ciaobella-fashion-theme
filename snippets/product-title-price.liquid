@@ -15,7 +15,7 @@
     {% assign heading_size_class = block.settings.text_size | prepend: 'heading-size-' %}
 
     {% if template contains 'product' %}
-      <h3 class="product__title {{ heading_size_class }}">{{ product.title | strip_html }}</h3>
+      <h1 class="product__title {{ heading_size_class }}">{{ product.title | strip_html }}</h1>
     {% else %}
       <h3 class="product__title">
         <a href="{{ product.url }}">{{ product.title | strip_html }}</a>

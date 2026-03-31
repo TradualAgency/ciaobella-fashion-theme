@@ -31,7 +31,7 @@
   {% case media.media_type %}
     {% when 'image' %}
       <div>
-        <div class="lazy-image mobile-zoom-wrapper" style="padding-top:{{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
+        <div class="lazy-image mobile-zoom-wrapper" style="padding-top: 75%; overflow: hidden;">
           <img data-product-image class="srcset"
             data-image-id="{{ media.id }}"
             alt="{{ alt_text_parts | first }}"
@@ -47,6 +47,7 @@
             loading="lazy"
             width="1180"
             height="{{ 1180 | divided_by: media.preview_image.aspect_ratio | ceil }}"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
             {% if media.alt contains 'variant--' %}
               data-variant="media.alt"
             {% endif %}/>

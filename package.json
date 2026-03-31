@@ -1,0 +1,17 @@
+{
+  "name": "theme_export__ciaobellafashion-nl-ciaobella-06-12-2022__30mar2026-0915pm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "tw:build": "npx @tailwindcss/cli -i src/tailwind.css -o assets/tailwind.css --minify",
+    "tw:watch": "npx @tailwindcss/cli -i src/tailwind.css -o assets/tailwind.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "tailwindcss": "^4.2.2"
+  }
+}
