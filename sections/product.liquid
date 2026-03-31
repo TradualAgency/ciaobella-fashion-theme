@@ -25,6 +25,28 @@
     margin: 0 0.4em;
     opacity: 0.5;
   }
+
+  .product__review-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    text-decoration: none;
+    color: inherit;
+    margin-top: 0.5em;
+  }
+  .product__review-badge:hover {
+    text-decoration: underline;
+  }
+  .product__review-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    color: #f5a623;
+  }
+  .product__review-count {
+    font-size: 0.85em;
+    opacity: 0.7;
+  }
 </style>
 
 {%- liquid
@@ -234,6 +256,12 @@
 </script>
 
 
+</div>
+
+<div id="judgeme-reviews" class="product__reviews-section">
+  <div class="wrapper">
+    <div id="judgeme_product_reviews" data-id="{{ product.id }}">{{ product.metafields.judgeme.widget }}</div>
+  </div>
 </div>
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
