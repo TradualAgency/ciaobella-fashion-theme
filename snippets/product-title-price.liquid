@@ -115,9 +115,10 @@
     <a href="#judgeme-reviews" class="product__review-badge" aria-label="{{ rating_value }} van {{ rating_max }} sterren, {{ rating_count }} reviews">
       <span class="product__review-stars" aria-hidden="true">
         {%- for i in (1..5) -%}
+          {%- assign i_minus_half = i | minus: 0.5 -%}
           {%- if rating_value >= i -%}
             <svg class="product__review-star product__review-star--full" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          {%- elsif rating_value >= i | minus: 0.5 -%}
+          {%- elsif rating_value >= i_minus_half -%}
             <svg class="product__review-star product__review-star--half" width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="half-{{ i }}"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="none" stop-opacity="0"/></linearGradient></defs><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="url(#half-{{ i }})" stroke="currentColor" stroke-width="1"/></svg>
           {%- else -%}
             <svg class="product__review-star product__review-star--empty" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
