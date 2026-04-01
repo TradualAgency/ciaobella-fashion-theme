@@ -42,75 +42,101 @@
         </div>
       {% endif %}
 
-      {% assign free_shipping_text = block.settings.message | default: settings.message %}
-{% assign is_enable = false %}
-{% assign show_wheel = true %}
+      {%- if settings.show_free_shipping_message and settings.free_shipping_limit != blank -%}
+        {%- assign fs_limit = settings.free_shipping_limit | plus: 0 -%}
+        {%- assign fs_limit_cents = fs_limit | times: 100 -%}
+        {%- assign fs_subtotal = cart.total_price | plus: 0 -%}
+        {%- assign fs_percent = fs_subtotal | times: 100 | divided_by: fs_limit_cents -%}
+        {%- if fs_percent > 100 -%}{%- assign fs_percent = 100 -%}{%- endif -%}
+        {%- assign fs_qualified = false -%}
+        {%- if fs_subtotal >= fs_limit_cents -%}{%- assign fs_qualified = true -%}{%- endif -%}
 
-{% if block.settings.show_wheel == false %}
-  {% assign show_wheel = false %}
-{% endif %}
+        {%- capture fs_remaining -%}
+          {%- if settings.currency_code_enable -%}
+            {{ fs_limit_cents | minus: fs_subtotal | money_with_currency }}
+          {%- else -%}
+            {{ fs_limit_cents | minus: fs_subtotal | money_without_trailing_zeros }}
+          {%- endif -%}
+        {%- endcapture -%}
 
-{% if block.settings.message != blank %}
-  {% assign is_enable = true %}
-{% endif %}
+        <div class="cart-shipping-bar{% if fs_qualified %} cart-shipping-bar--qualified{% endif %}" data-shipping-bar data-limit="{{ fs_limit }}" data-cart-progress>
+          <div class="cart-shipping-bar__text">
+            {%- if fs_qualified -%}
+              <span class="cart-shipping-bar__success">🎉 Gefeliciteerd, je hebt gratis verzending!</span>
+            {%- else -%}
+              <span class="cart-shipping-bar__default">Nog <strong data-shipping-remaining>{{ fs_remaining | strip }}</strong> voor gratis verzending</span>
+            {%- endif -%}
+          </div>
+          <div class="cart-shipping-bar__track">
+            <div class="cart-shipping-bar__fill" data-shipping-fill style="width: {{ fs_percent }}%"></div>
+          </div>
+        </div>
 
-{% if settings.show_free_shipping_message and settings.free_shipping_limit != blank and free_shipping_text != blank %}
-  {% assign is_enable = true %}
-{% endif %}
+        <style>
+          .cart-shipping-bar {
+            padding: 12px 20px 10px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #ebebeb;
+          }
+          .cart-shipping-bar__text {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 8px;
+            text-align: center;
+          }
+          .cart-shipping-bar__success {
+            color: #1a7d3c;
+            font-weight: 600;
+          }
+          .cart-shipping-bar__track {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+          }
+          .cart-shipping-bar__fill {
+            height: 100%;
+            background: #000;
+            border-radius: 4px;
+            transition: width 0.4s ease;
+          }
+          .cart-shipping-bar--qualified .cart-shipping-bar__fill {
+            background: #1a7d3c;
+          }
+        </style>
 
-{% if is_enable %}
-  {% assign limit = settings.free_shipping_limit | plus: 0 %}
-  {% assign limit_currency = limit | times: 100 %}
-  {% assign subtotal_without_currency = cart.total_price | plus: 0 | divided_by: 100 %}
+        <script>
+          (function() {
+            function updateShippingBar() {
+              var bar = document.querySelector('[data-shipping-bar]');
+              if (!bar) return;
+              var limitEl = bar.getAttribute('data-limit');
+              var limit = parseFloat(limitEl) * 100;
+              var fill = bar.querySelector('[data-shipping-fill]');
+              var remainingEl = bar.querySelector('[data-shipping-remaining]');
 
-  {% capture left_to_spend %}
-    <span data-left-to-spend>
-      {% if settings.currency_code_enable %}
-        {{ limit_currency | minus: cart.total_price | money_with_currency }}
-      {% else %}
-        {{ limit_currency | minus: cart.total_price | money_without_trailing_zeros }}
-      {% endif %}
-    </span>
-  {% endcapture %}
+              fetch('/cart.js')
+                .then(function(r) { return r.json(); })
+                .then(function(cart) {
+                  var subtotal = cart.total_price;
+                  var percent = Math.min(100, Math.round(subtotal / limit * 100));
+                  if (fill) fill.style.width = percent + '%';
 
-  {% assign free_shipping_message = free_shipping_text | replace: '||amount||', left_to_spend %}
-  {% assign qualified_shipping_message = 'cart.general.qualified_shipping_message' | t %}
-  {% assign class_message = '' %}
+                  var qualified = subtotal >= limit;
+                  bar.classList.toggle('cart-shipping-bar--qualified', qualified);
 
-  {% if subtotal_without_currency >= limit %}
-    {% if qualified_shipping_message != blank %}
-      {% assign class_message = 'is-success' %}
-    {% else %}
-      {% assign class_message = 'is-hidden' %}
-    {% endif %}
-  {% elsif subtotal_without_currency == 0 %}
-    {% comment %} {% assign class_message = 'is-hidden' %} {% endcomment %}
-  {% endif %}
+                  if (remainingEl) {
+                    var remaining = limit - subtotal;
+                    if (remaining < 0) remaining = 0;
+                    remainingEl.textContent = (remaining / 100).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
+                  }
+                });
+            }
 
-  <p class="cart__message {{ class_message }}" data-cart-message="{% if qualified_shipping_message != blank %}true{% else %}false{% endif %}" data-limit="{{ limit }}" data-cart-progress>
-    {% if show_wheel %}
-      {% assign percent = limit | minus: subtotal_without_currency | times: 100 | divided_by: limit %}
-      {% assign percent = 100 | minus: percent %}
-
-      {% if percent > 100 %}
-        {% assign percent = 100 %}
-      {% endif %}
-      <small class="cart__graph">
-        {% for i in (1..6) %}
-          <small class="confetti confetti--{{ i }}"></small>
-        {% endfor %}
-      </small>
-    {% endif %}
-
-    {% if qualified_shipping_message != blank %}
-      <span class="cart__message-success">{{ qualified_shipping_message }}</span>
-    {% endif %}
-
-    <span class="cart__message-default">
-      {{ free_shipping_message }}
-    </span>
-  </p>
-{% endif %}
+            document.addEventListener('cart:updated', updateShippingBar);
+          })();
+        </script>
+      {%- endif -%}
 
       <div class="errors" data-form-errors style="display: none;"></div>
 

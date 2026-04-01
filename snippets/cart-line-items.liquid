@@ -210,3 +210,28 @@
     {%- break -%}
   {%- endfor -%}
 {%- endif -%}
+
+{%- comment -%} Vaste upsell producten vanuit theme settings {%- endcomment -%}
+{%- assign fixed_upsell_shown = false -%}
+{%- assign cart_products_padded = cart_products | prepend: ',' -%}
+{%- assign upsell_setting_handles = '' -%}
+{%- if settings.cart_upsell_product_1 != blank -%}
+  {%- assign upsell_setting_handles = upsell_setting_handles | append: settings.cart_upsell_product_1 | append: ',' -%}
+{%- endif -%}
+{%- if settings.cart_upsell_product_2 != blank -%}
+  {%- assign upsell_setting_handles = upsell_setting_handles | append: settings.cart_upsell_product_2 | append: ',' -%}
+{%- endif -%}
+{%- if settings.cart_upsell_product_3 != blank -%}
+  {%- assign upsell_setting_handles = upsell_setting_handles | append: settings.cart_upsell_product_3 | append: ',' -%}
+{%- endif -%}
+{%- assign upsell_handle_array = upsell_setting_handles | split: ',' -%}
+{%- for upsell_handle in upsell_handle_array -%}
+  {%- if upsell_handle == blank or fixed_upsell_shown -%}{%- continue -%}{%- endif -%}
+  {%- assign fixed_upsell_prod = all_products[upsell_handle] -%}
+  {%- if fixed_upsell_prod == blank or fixed_upsell_prod.available == false -%}{%- continue -%}{%- endif -%}
+  {%- assign fixed_upsell_id = fixed_upsell_prod.id | append: '' -%}
+  {%- unless cart_products_padded contains fixed_upsell_id -%}
+    {%- render 'upsell-product' upsell_product: fixed_upsell_prod, section: section -%}
+    {%- assign fixed_upsell_shown = true -%}
+  {%- endunless -%}
+{%- endfor -%}
