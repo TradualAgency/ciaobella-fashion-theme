@@ -164,16 +164,9 @@
         </div>
       </div>
     </div>
-    {%- comment -%} Vaste upsell slider {%- endcomment -%}
-    {%- assign upsell_p1 = all_products[settings.cart_upsell_product_1] -%}
-    {%- assign upsell_p2 = all_products[settings.cart_upsell_product_2] -%}
-    {%- assign upsell_p3 = all_products[settings.cart_upsell_product_3] -%}
-    {%- assign has_upsell = false -%}
-    {%- if upsell_p1 != blank or upsell_p2 != blank or upsell_p3 != blank -%}
-      {%- assign has_upsell = true -%}
-    {%- endif -%}
-
-    {%- if has_upsell -%}
+    {%- comment -%} Vaste upsell slider op basis van collectie {%- endcomment -%}
+    {%- assign upsell_collection = collections[settings.cart_upsell_collection] -%}
+    {%- if upsell_collection != blank and upsell_collection.products.size > 0 -%}
       <div class="cu-slider" id="cart-upsell-slider">
         <div class="cu-slider__header">
           <span class="cu-slider__label">Misschien ook leuk</span>
@@ -189,13 +182,8 @@
         <div class="cu-slider__viewport">
           <div class="cu-slider__track" id="upsell-track">
 
-            {%- for i in (1..3) -%}
-              {%- assign upsell_p = nil -%}
-              {%- if i == 1 and upsell_p1 != blank and upsell_p1.available -%}{%- assign upsell_p = upsell_p1 -%}{%- endif -%}
-              {%- if i == 2 and upsell_p2 != blank and upsell_p2.available -%}{%- assign upsell_p = upsell_p2 -%}{%- endif -%}
-              {%- if i == 3 and upsell_p3 != blank and upsell_p3.available -%}{%- assign upsell_p = upsell_p3 -%}{%- endif -%}
-              {%- if upsell_p == nil -%}{%- continue -%}{%- endif -%}
-
+            {%- for upsell_p in upsell_collection.products -%}
+              {%- unless upsell_p.available -%}{%- continue -%}{%- endunless -%}
               {%- assign up_variant = upsell_p.selected_or_first_available_variant -%}
               <div class="cu-slide">
                 <div class="cu-card" data-cu-card>
@@ -220,7 +208,7 @@
                         {%- endif -%}
                       </span>
                       {%- if up_variant.compare_at_price > up_variant.price -%}
-                        <s data-cu-compare>
+                        <s>
                           {%- if settings.currency_code_enable -%}
                             {{ up_variant.compare_at_price | money_with_currency }}
                           {%- else -%}
@@ -232,7 +220,7 @@
 
                     {%- unless upsell_p.has_only_default_variant -%}
                       {%- for option in upsell_p.options_with_values -%}
-                        <div class="cu-card__options" data-cu-option-group="{{ forloop.index0 }}">
+                        <div class="cu-card__options">
                           {%- for value in option.values -%}
                             <button
                               type="button"
@@ -248,11 +236,7 @@
                     <form class="cu-card__form" data-cu-form>
                       <input type="hidden" name="id" value="{{ up_variant.id }}" data-cu-variant-id>
                       <input type="hidden" name="quantity" value="1">
-                      <button
-                        type="submit"
-                        class="cu-card__btn"
-                        data-cu-btn
-                        {% unless up_variant.available %}disabled{% endunless %}>
+                      <button type="submit" class="cu-card__btn" data-cu-btn {% unless up_variant.available %}disabled{% endunless %}>
                         <span class="cu-card__btn-ready">{{ 'products.upsell.add_to_cart' | t }}</span>
                         <span class="cu-card__btn-loading" aria-hidden="true">
                           <svg height="16" width="16" class="svg-loader"><circle r="6" cx="8" cy="8"/><circle stroke-dasharray="75.4 75.4" r="6" cx="8" cy="8"/></svg>

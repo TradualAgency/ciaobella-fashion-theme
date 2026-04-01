@@ -657,22 +657,12 @@
       },
       {
         "type": "paragraph",
-        "content": "Selecteer producten die als upsell in de winkelwagen worden getoond. Het eerste beschikbare product dat nog niet in de winkelwagen zit, wordt weergegeven."
+        "content": "Maak een collectie aan in je Shopify admin en selecteer die hier. Alle producten uit die collectie worden als upsell-slider getoond in de winkelwagen."
       },
       {
-        "type": "product",
-        "id": "cart_upsell_product_1",
-        "label": "Upsell product 1"
-      },
-      {
-        "type": "product",
-        "id": "cart_upsell_product_2",
-        "label": "Upsell product 2"
-      },
-      {
-        "type": "product",
-        "id": "cart_upsell_product_3",
-        "label": "Upsell product 3"
+        "type": "collection",
+        "id": "cart_upsell_collection",
+        "label": "Upsell collectie"
       }
     ]
   },
