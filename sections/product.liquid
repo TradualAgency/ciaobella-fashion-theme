@@ -9,23 +9,6 @@
     }
   }
 
-  .product__breadcrumb {
-    font-size: 0.8em;
-    margin-bottom: 0.75em;
-    color: var(--text-color, #666);
-  }
-  .product__breadcrumb a {
-    color: inherit;
-    text-decoration: none;
-  }
-  .product__breadcrumb a:hover {
-    text-decoration: underline;
-  }
-  .product__breadcrumb span[aria-hidden] {
-    margin: 0 0.4em;
-    opacity: 0.5;
-  }
-
   .product__price__wrap {
     margin-bottom: 0;
   }
@@ -87,15 +70,6 @@
 <div class="{{ section.settings.width }} section-padding">
   <div class="product-content">
     <div class="grid">
-      <div class="grid__item medium-up--hide">
-        {% for block in section.blocks %}
-          {% case block.type %}
-            {% when 'title' %}
-              {% render 'product-title-price', product: product, block: block, section: section, classes: 'product__headline--mobile' %}
-          {% endcase %}
-        {% endfor %}
-      </div>
-
       <div class="grid__item medium-up--one-half product__media-column">
 
         {% if product.media.size > 0 %}
@@ -165,6 +139,15 @@
             {% endfor %}
           </div>
         {%- endif -%}
+      </div>
+
+      <div class="grid__item medium-up--hide">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'title' %}
+              {% render 'product-title-price', product: product, block: block, section: section, classes: 'product__headline--mobile' %}
+          {% endcase %}
+        {% endfor %}
       </div>
 
       <div class="grid__item medium-up--one-half">
