@@ -165,135 +165,398 @@
       </div>
     </div>
     {%- comment -%} Vaste upsell slider {%- endcomment -%}
-    {%- assign has_upsell = false -%}
     {%- assign upsell_p1 = all_products[settings.cart_upsell_product_1] -%}
     {%- assign upsell_p2 = all_products[settings.cart_upsell_product_2] -%}
     {%- assign upsell_p3 = all_products[settings.cart_upsell_product_3] -%}
+    {%- assign has_upsell = false -%}
     {%- if upsell_p1 != blank or upsell_p2 != blank or upsell_p3 != blank -%}
       {%- assign has_upsell = true -%}
     {%- endif -%}
 
     {%- if has_upsell -%}
-      <div class="cart-upsell-slider" id="cart-upsell-slider">
-        <div class="cart-upsell-slider__header">
-          <span class="cart-upsell-slider__label">Misschien ook leuk</span>
-          <div class="cart-upsell-slider__nav">
-            <button class="cart-upsell-slider__btn cart-upsell-slider__btn--prev" aria-label="Vorige" id="upsell-prev">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      <div class="cu-slider" id="cart-upsell-slider">
+        <div class="cu-slider__header">
+          <span class="cu-slider__label">Misschien ook leuk</span>
+          <div class="cu-slider__nav">
+            <button class="cu-slider__btn" id="upsell-prev" aria-label="Vorige" disabled>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
-            <button class="cart-upsell-slider__btn cart-upsell-slider__btn--next" aria-label="Volgende" id="upsell-next">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+            <button class="cu-slider__btn" id="upsell-next" aria-label="Volgende">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 6 15 12 9 18"/></svg>
             </button>
           </div>
         </div>
-        <div class="cart-upsell-slider__viewport">
-          <div class="cart-upsell-slider__track" id="upsell-track">
-            {%- if upsell_p1 != blank and upsell_p1.available -%}
-              <div class="cart-upsell-slide">
-                {%- render 'upsell-product', upsell_product: upsell_p1, section: section -%}
+        <div class="cu-slider__viewport">
+          <div class="cu-slider__track" id="upsell-track">
+
+            {%- for i in (1..3) -%}
+              {%- assign upsell_p = nil -%}
+              {%- if i == 1 and upsell_p1 != blank and upsell_p1.available -%}{%- assign upsell_p = upsell_p1 -%}{%- endif -%}
+              {%- if i == 2 and upsell_p2 != blank and upsell_p2.available -%}{%- assign upsell_p = upsell_p2 -%}{%- endif -%}
+              {%- if i == 3 and upsell_p3 != blank and upsell_p3.available -%}{%- assign upsell_p = upsell_p3 -%}{%- endif -%}
+              {%- if upsell_p == nil -%}{%- continue -%}{%- endif -%}
+
+              {%- assign up_variant = upsell_p.selected_or_first_available_variant -%}
+              <div class="cu-slide">
+                <div class="cu-card" data-cu-card>
+                  <a href="{{ upsell_p.url }}" class="cu-card__img-wrap">
+                    {%- if upsell_p.featured_media -%}
+                      <img
+                        src="{{ upsell_p.featured_media | img_url: '400x500', crop: 'center' }}"
+                        alt="{{ upsell_p.featured_media.alt | default: upsell_p.title | escape }}"
+                        loading="lazy"
+                        width="400"
+                        height="500">
+                    {%- endif -%}
+                  </a>
+                  <div class="cu-card__body">
+                    <a href="{{ upsell_p.url }}" class="cu-card__title">{{ upsell_p.title | strip_html }}</a>
+                    <div class="cu-card__price">
+                      <span data-cu-price>
+                        {%- if settings.currency_code_enable -%}
+                          {{ up_variant.price | money_with_currency }}
+                        {%- else -%}
+                          {{ up_variant.price | money }}
+                        {%- endif -%}
+                      </span>
+                      {%- if up_variant.compare_at_price > up_variant.price -%}
+                        <s data-cu-compare>
+                          {%- if settings.currency_code_enable -%}
+                            {{ up_variant.compare_at_price | money_with_currency }}
+                          {%- else -%}
+                            {{ up_variant.compare_at_price | money }}
+                          {%- endif -%}
+                        </s>
+                      {%- endif -%}
+                    </div>
+
+                    {%- unless upsell_p.has_only_default_variant -%}
+                      {%- for option in upsell_p.options_with_values -%}
+                        <div class="cu-card__options" data-cu-option-group="{{ forloop.index0 }}">
+                          {%- for value in option.values -%}
+                            <button
+                              type="button"
+                              class="cu-swatch{% if value == up_variant.options[forloop.parentloop.index0] %} is-selected{% endif %}"
+                              data-cu-swatch="{{ forloop.parentloop.index0 }}"
+                              data-cu-value="{{ value | escape }}"
+                            >{{ value }}</button>
+                          {%- endfor -%}
+                        </div>
+                      {%- endfor -%}
+                    {%- endunless -%}
+
+                    <form class="cu-card__form" data-cu-form>
+                      <input type="hidden" name="id" value="{{ up_variant.id }}" data-cu-variant-id>
+                      <input type="hidden" name="quantity" value="1">
+                      <button
+                        type="submit"
+                        class="cu-card__btn"
+                        data-cu-btn
+                        {% unless up_variant.available %}disabled{% endunless %}>
+                        <span class="cu-card__btn-ready">{{ 'products.upsell.add_to_cart' | t }}</span>
+                        <span class="cu-card__btn-loading" aria-hidden="true">
+                          <svg height="16" width="16" class="svg-loader"><circle r="6" cx="8" cy="8"/><circle stroke-dasharray="75.4 75.4" r="6" cx="8" cy="8"/></svg>
+                        </span>
+                      </button>
+                    </form>
+
+                    <script type="application/json" data-cu-variants>{{ upsell_p.variants | json }}</script>
+                  </div>
+                </div>
               </div>
-            {%- endif -%}
-            {%- if upsell_p2 != blank and upsell_p2.available -%}
-              <div class="cart-upsell-slide">
-                {%- render 'upsell-product', upsell_product: upsell_p2, section: section -%}
-              </div>
-            {%- endif -%}
-            {%- if upsell_p3 != blank and upsell_p3.available -%}
-              <div class="cart-upsell-slide">
-                {%- render 'upsell-product', upsell_product: upsell_p3, section: section -%}
-              </div>
-            {%- endif -%}
+            {%- endfor -%}
+
           </div>
         </div>
       </div>
 
       <style>
-        .cart-upsell-slider {
+        .cu-slider {
           border-top: 1px solid #ebebeb;
           background: #fff;
           padding: 14px 0 0;
         }
-        .cart-upsell-slider__header {
+        .cu-slider__header {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0 20px 10px;
+          padding: 0 16px 10px;
         }
-        .cart-upsell-slider__label {
-          font-size: 12px;
+        .cu-slider__label {
+          font-size: 11px;
           font-weight: 600;
           text-transform: uppercase;
-          letter-spacing: 0.06em;
-          color: #888;
+          letter-spacing: 0.08em;
+          color: #999;
         }
-        .cart-upsell-slider__nav {
+        .cu-slider__nav {
           display: flex;
-          gap: 4px;
+          gap: 6px;
         }
-        .cart-upsell-slider__btn {
+        .cu-slider__btn {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 28px;
-          height: 28px;
+          width: 26px;
+          height: 26px;
           border: 1px solid #ddd;
           border-radius: 50%;
           background: #fff;
           cursor: pointer;
           color: #333;
-          transition: border-color 0.2s, background 0.2s;
           padding: 0;
+          transition: background 0.15s, border-color 0.15s, color 0.15s;
         }
-        .cart-upsell-slider__btn:hover {
-          border-color: #000;
+        .cu-slider__btn:hover:not(:disabled) {
           background: #000;
+          border-color: #000;
           color: #fff;
         }
-        .cart-upsell-slider__btn:disabled {
-          opacity: 0.3;
+        .cu-slider__btn:disabled {
+          opacity: 0.25;
           cursor: default;
-          pointer-events: none;
         }
-        .cart-upsell-slider__viewport {
+        .cu-slider__viewport {
           overflow: hidden;
         }
-        .cart-upsell-slider__track {
+        .cu-slider__track {
           display: flex;
           transition: transform 0.3s ease;
         }
-        .cart-upsell-slide {
+        .cu-slide {
           min-width: 100%;
           flex-shrink: 0;
         }
-        .cart-upsell-slide .upsell__holder {
-          margin: 0;
+        .cu-card {
+          display: flex;
+          gap: 14px;
+          padding: 0 16px 16px;
+          align-items: flex-start;
         }
-        .cart-upsell-slide upsell-product {
+        .cu-card__img-wrap {
+          flex-shrink: 0;
+          width: 90px;
+          height: 112px;
+          overflow: hidden;
+          border-radius: 6px;
+          background: #f5f5f5;
           display: block;
+        }
+        .cu-card__img-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .cu-card__body {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .cu-card__title {
+          font-size: 13px;
+          font-weight: 500;
+          color: #000;
+          text-decoration: none;
+          line-height: 1.3;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .cu-card__title:hover {
+          text-decoration: underline;
+        }
+        .cu-card__price {
+          font-size: 13px;
+          font-weight: 600;
+          display: flex;
+          gap: 6px;
+          align-items: center;
+        }
+        .cu-card__price s {
+          font-weight: 400;
+          color: #999;
+          font-size: 12px;
+        }
+        .cu-card__options {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 4px;
+        }
+        .cu-swatch {
+          padding: 3px 8px;
+          font-size: 11px;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          background: transparent;
+          color: #333;
+          cursor: pointer;
+          transition: border-color 0.15s;
+          line-height: 1.4;
+        }
+        .cu-swatch:hover {
+          border-color: #666;
+        }
+        .cu-swatch.is-selected {
+          border-color: #000;
+          color: #000;
+          font-weight: 600;
+        }
+        .cu-card__btn {
+          margin-top: 2px;
+          width: 100%;
+          padding: 9px 12px;
+          background: #000;
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          letter-spacing: 0.04em;
+          transition: background 0.15s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+        }
+        .cu-card__btn:hover:not(:disabled) {
+          background: #333;
+        }
+        .cu-card__btn:disabled {
+          background: #ccc;
+          cursor: default;
+        }
+        .cu-card__btn-loading {
+          display: none;
+        }
+        .cu-card__btn.is-loading .cu-card__btn-ready {
+          display: none;
+        }
+        .cu-card__btn.is-loading .cu-card__btn-loading {
+          display: flex;
+        }
+        .cu-card__btn.is-done {
+          background: #1a7d3c;
         }
       </style>
 
       <script>
         (function() {
+          // Slider
           var track = document.getElementById('upsell-track');
           var prevBtn = document.getElementById('upsell-prev');
           var nextBtn = document.getElementById('upsell-next');
-          if (!track || !prevBtn || !nextBtn) return;
-
-          var slides = track.querySelectorAll('.cart-upsell-slide');
-          var total = slides.length;
-          var current = 0;
-
-          function goTo(index) {
-            current = Math.max(0, Math.min(index, total - 1));
-            track.style.transform = 'translateX(-' + (current * 100) + '%)';
-            prevBtn.disabled = current === 0;
-            nextBtn.disabled = current === total - 1;
+          if (track && prevBtn && nextBtn) {
+            var slides = track.querySelectorAll('.cu-slide');
+            var total = slides.length;
+            var current = 0;
+            function goTo(n) {
+              current = Math.max(0, Math.min(n, total - 1));
+              track.style.transform = 'translateX(-' + (current * 100) + '%)';
+              prevBtn.disabled = current === 0;
+              nextBtn.disabled = current === total - 1;
+            }
+            prevBtn.addEventListener('click', function() { goTo(current - 1); });
+            nextBtn.addEventListener('click', function() { goTo(current + 1); });
+            goTo(0);
           }
 
-          prevBtn.addEventListener('click', function() { goTo(current - 1); });
-          nextBtn.addEventListener('click', function() { goTo(current + 1); });
-          goTo(0);
+          // Swatch selection + variant switching per card
+          document.querySelectorAll('[data-cu-card]').forEach(function(card) {
+            var variantsEl = card.querySelector('[data-cu-variants]');
+            if (!variantsEl) return;
+            var variants = JSON.parse(variantsEl.textContent);
+            var idInput = card.querySelector('[data-cu-variant-id]');
+            var priceEl = card.querySelector('[data-cu-price]');
+            var btn = card.querySelector('[data-cu-btn]');
+            var selectedOptions = {};
+
+            // Init selected options from pre-selected swatches
+            card.querySelectorAll('.cu-swatch.is-selected').forEach(function(sw) {
+              selectedOptions[sw.dataset.cuSwatch] = sw.dataset.cuValue;
+            });
+
+            function findVariant() {
+              return variants.find(function(v) {
+                return v.options.every(function(opt, idx) {
+                  return !selectedOptions[idx] || selectedOptions[idx] === opt;
+                });
+              });
+            }
+
+            function updateVariant() {
+              var variant = findVariant();
+              if (!variant) return;
+              idInput.value = variant.id;
+              if (priceEl) {
+                var price = (variant.price / 100).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
+                priceEl.textContent = price;
+              }
+              if (btn) {
+                btn.disabled = !variant.available;
+              }
+            }
+
+            card.querySelectorAll('.cu-swatch').forEach(function(sw) {
+              sw.addEventListener('click', function() {
+                var groupIdx = sw.dataset.cuSwatch;
+                card.querySelectorAll('[data-cu-swatch="' + groupIdx + '"]').forEach(function(s) {
+                  s.classList.remove('is-selected');
+                });
+                sw.classList.add('is-selected');
+                selectedOptions[groupIdx] = sw.dataset.cuValue;
+                updateVariant();
+              });
+            });
+
+            // AJAX add to cart
+            var form = card.querySelector('[data-cu-form]');
+            if (form) {
+              form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                btn.classList.add('is-loading');
+                btn.disabled = true;
+                var variantId = idInput.value;
+                fetch('/cart/add.js', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                  body: JSON.stringify({ id: variantId, quantity: 1 })
+                })
+                .then(function(r) { return r.json(); })
+                .then(function() {
+                  btn.classList.remove('is-loading');
+                  btn.classList.add('is-done');
+                  btn.querySelector('.cu-card__btn-ready').textContent = 'Toegevoegd ✓';
+                  btn.disabled = false;
+                  // Trigger cart refresh
+                  document.dispatchEvent(new CustomEvent('cart:item-added'));
+                  fetch('/?section_id=api-cart-items').then(function(r) { return r.text(); }).then(function(html) {
+                    var doc = new DOMParser().parseFromString(html, 'text/html');
+                    var newItems = doc.querySelector('[data-line-items]');
+                    var currentItems = document.querySelector('[data-line-items]');
+                    if (newItems && currentItems) currentItems.innerHTML = newItems.innerHTML;
+                    // Update cart count
+                    return fetch('/cart.js');
+                  }).then(function(r) { return r.json(); }).then(function(cart) {
+                    var countEls = document.querySelectorAll('[data-cart-count]');
+                    countEls.forEach(function(el) { el.textContent = cart.item_count; });
+                    var totalEls = document.querySelectorAll('[data-cart-final]');
+                    totalEls.forEach(function(el) {
+                      el.textContent = (cart.total_price / 100).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
+                    });
+                  });
+                })
+                .catch(function() {
+                  btn.classList.remove('is-loading');
+                  btn.disabled = false;
+                });
+              });
+            }
+          });
         })();
       </script>
     {%- endif -%}
