@@ -53,7 +53,7 @@
     "cart_custom_message_enable": false,
     "cart_color_bg": "palette--light bg--accent",
     "cart_show_additional_buttons": false,
-    "cart_upsell_product_1": "bundel-test",
+    "cart_upsell_product_1": "gift-card",
     "cart_upsell_product_2": "gift-card",
     "cart_upsell_product_3": "the-compare-at-price-snowboard",
     "search_articles": false,
