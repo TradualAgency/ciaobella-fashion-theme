@@ -47,6 +47,26 @@
     --btn-text-hover: var(--bg);
     --btn-shadow: var(--hairline);
   }
+
+  /* Size swatches: no background, black text, grey border, black border on selection */
+  .radio__button label {
+    background-color: transparent;
+    color: var(--text);
+    border: 1px solid #ccc;
+  }
+  .radio__button input:checked + label {
+    background-color: transparent;
+    color: var(--text);
+    border-color: #000;
+  }
+
+  /* Add to cart button: black with white text */
+  .product__form__outer:not(.product__form--buybutton) .product__submit__add {
+    --btn-bg: #000;
+    --btn-text: #fff;
+    --btn-bg-hover: #222;
+    --btn-text-hover: #fff;
+  }
 </style>
 
 {%- liquid

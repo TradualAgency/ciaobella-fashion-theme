@@ -250,21 +250,7 @@
         <span data-subscription-watch-price></span>
       {%- endif -%}
 
-      {% if block.settings.show_quantity %}
-        <div class="quantity__wrapper" data-quantity-selector>
-          <button type="button" class="quantity__button quantity__button--minus" data-decrease-quantity>&minus;</button>
-          <input data-quantity-input
-            aria-label="{{ 'cart.label.quantity' | t }}"
-            class="quantity__input"
-            type="number"
-            min="1"
-            size="4"
-            pattern="[0-9]*"
-            name="quantity"
-            value="1"/>
-          <button type="button" class="quantity__button quantity__button--plus" data-increase-quantity>+</button>
-        </div>
-      {% endif %}
+      <input type="hidden" name="quantity" value="1">
 
 
       {%- if block.settings.show_remaining or size_chart_index == -1 -%}
