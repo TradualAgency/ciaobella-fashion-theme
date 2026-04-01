@@ -36,16 +36,31 @@
 
   .shop-the-look__card {
     border: none;
-    background-color: #fff5f5;
+    background-color: #f5f5f5;
     border-radius: 12px;
   }
 
+  .shop-the-look__image {
+    aspect-ratio: 3 / 4;
+  }
+
   .shop-the-look__button {
-    --btn-bg: green !important;
-    --btn-text: var(--bg);
-    --btn-bg-hover: var(--text-dark);
-    --btn-text-hover: var(--bg);
-    --btn-shadow: var(--hairline);
+    --btn-bg: #000 !important;
+    --btn-text: #fff;
+    --btn-bg-hover: #222;
+    --btn-text-hover: #fff;
+    --btn-shadow: rgba(0,0,0,0.05);
+  }
+
+  .shop-the-look__chip span {
+    background-color: transparent;
+    border-radius: var(--RADIUS-BTN, 3px);
+    border-color: #ccc;
+  }
+  .shop-the-look__chip input:checked + span {
+    background-color: transparent;
+    color: var(--text);
+    border-color: #000;
   }
 
   /* Size swatches: no background, black text, grey border, black border on selection */
