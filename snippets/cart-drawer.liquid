@@ -164,6 +164,140 @@
         </div>
       </div>
     </div>
+    {%- comment -%} Vaste upsell slider {%- endcomment -%}
+    {%- assign has_upsell = false -%}
+    {%- assign upsell_p1 = all_products[settings.cart_upsell_product_1] -%}
+    {%- assign upsell_p2 = all_products[settings.cart_upsell_product_2] -%}
+    {%- assign upsell_p3 = all_products[settings.cart_upsell_product_3] -%}
+    {%- if upsell_p1 != blank or upsell_p2 != blank or upsell_p3 != blank -%}
+      {%- assign has_upsell = true -%}
+    {%- endif -%}
+
+    {%- if has_upsell -%}
+      <div class="cart-upsell-slider" id="cart-upsell-slider">
+        <div class="cart-upsell-slider__header">
+          <span class="cart-upsell-slider__label">Misschien ook leuk</span>
+          <div class="cart-upsell-slider__nav">
+            <button class="cart-upsell-slider__btn cart-upsell-slider__btn--prev" aria-label="Vorige" id="upsell-prev">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="cart-upsell-slider__btn cart-upsell-slider__btn--next" aria-label="Volgende" id="upsell-next">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="cart-upsell-slider__viewport">
+          <div class="cart-upsell-slider__track" id="upsell-track">
+            {%- if upsell_p1 != blank and upsell_p1.available -%}
+              <div class="cart-upsell-slide">
+                {%- render 'upsell-product', upsell_product: upsell_p1, section: section -%}
+              </div>
+            {%- endif -%}
+            {%- if upsell_p2 != blank and upsell_p2.available -%}
+              <div class="cart-upsell-slide">
+                {%- render 'upsell-product', upsell_product: upsell_p2, section: section -%}
+              </div>
+            {%- endif -%}
+            {%- if upsell_p3 != blank and upsell_p3.available -%}
+              <div class="cart-upsell-slide">
+                {%- render 'upsell-product', upsell_product: upsell_p3, section: section -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <style>
+        .cart-upsell-slider {
+          border-top: 1px solid #ebebeb;
+          background: #fff;
+          padding: 14px 0 0;
+        }
+        .cart-upsell-slider__header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 20px 10px;
+        }
+        .cart-upsell-slider__label {
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          color: #888;
+        }
+        .cart-upsell-slider__nav {
+          display: flex;
+          gap: 4px;
+        }
+        .cart-upsell-slider__btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 28px;
+          height: 28px;
+          border: 1px solid #ddd;
+          border-radius: 50%;
+          background: #fff;
+          cursor: pointer;
+          color: #333;
+          transition: border-color 0.2s, background 0.2s;
+          padding: 0;
+        }
+        .cart-upsell-slider__btn:hover {
+          border-color: #000;
+          background: #000;
+          color: #fff;
+        }
+        .cart-upsell-slider__btn:disabled {
+          opacity: 0.3;
+          cursor: default;
+          pointer-events: none;
+        }
+        .cart-upsell-slider__viewport {
+          overflow: hidden;
+        }
+        .cart-upsell-slider__track {
+          display: flex;
+          transition: transform 0.3s ease;
+        }
+        .cart-upsell-slide {
+          min-width: 100%;
+          flex-shrink: 0;
+        }
+        .cart-upsell-slide .upsell__holder {
+          margin: 0;
+        }
+        .cart-upsell-slide upsell-product {
+          display: block;
+        }
+      </style>
+
+      <script>
+        (function() {
+          var track = document.getElementById('upsell-track');
+          var prevBtn = document.getElementById('upsell-prev');
+          var nextBtn = document.getElementById('upsell-next');
+          if (!track || !prevBtn || !nextBtn) return;
+
+          var slides = track.querySelectorAll('.cart-upsell-slide');
+          var total = slides.length;
+          var current = 0;
+
+          function goTo(index) {
+            current = Math.max(0, Math.min(index, total - 1));
+            track.style.transform = 'translateX(-' + (current * 100) + '%)';
+            prevBtn.disabled = current === 0;
+            nextBtn.disabled = current === total - 1;
+          }
+
+          prevBtn.addEventListener('click', function() { goTo(current - 1); });
+          nextBtn.addEventListener('click', function() { goTo(current + 1); });
+          goTo(0);
+        })();
+      </script>
+    {%- endif -%}
+
     <div class="drawer__bottom cart--hidden" data-cart-bottom data-accordion-group>
       {%- if settings.cart_notes_enable or settings.cart_shipping_enable -%}
         <div class="drawer__accordion__holder">
