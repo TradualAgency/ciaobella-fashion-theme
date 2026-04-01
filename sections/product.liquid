@@ -75,6 +75,16 @@
     border-color: #000;
   }
 
+  /* Reduce top padding on mobile/tablet, add 20px above title */
+  @media only screen and (max-width: 989px) {
+    .product-section .section-padding {
+      padding-top: 20px;
+    }
+    .product__media-column {
+      margin-bottom: 20px;
+    }
+  }
+
   /* Add to cart button: black with white text */
   .product__form__outer:not(.product__form--buybutton) .product__submit__add {
     --btn-bg: #000;
