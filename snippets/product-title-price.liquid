@@ -114,4 +114,11 @@
       <span class="product__review-count">{{ rating_count }} {{ rating_count | pluralize: 'review', 'reviews' }}</span>
     </a>
   {%- endif -%}
+
+  {%- if template contains 'product' -%}
+    <div class="product__shipping-info">
+      <p>{{ 'products.product.free_shipping_notice' | t }}</p>
+      <p>{{ 'products.product.delivery_notice' | t }}</p>
+    </div>
+  {%- endif -%}
 </div>
