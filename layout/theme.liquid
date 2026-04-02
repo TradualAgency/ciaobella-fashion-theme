@@ -192,7 +192,7 @@
 
   {{ content_for_header }}
 
-                      {% include 'bss-product-labels-configs' %}
+                      {% render 'bss-product-labels-configs' %}
                         </head>
                  
 
@@ -275,7 +275,7 @@
 
 {% if content_for_header contains 'product_label' %}{% include 'bss-product-label-js' %}{% include 'bss-label-style-css' %}{% include 'bss-product-label-fonts' %}{% endif %}
 
-{% comment %} {% render 'easter-egg' %} {% endcomment %}
+{% render 'easter-egg' %}
 
 </body>
 </html>
