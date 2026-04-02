@@ -61,11 +61,8 @@
 
         <div class="cart-shipping-bar{% if fs_qualified %} cart-shipping-bar--qualified{% endif %}" data-shipping-bar data-limit="{{ fs_limit }}" data-cart-progress>
           <div class="cart-shipping-bar__text">
-            {%- if fs_qualified -%}
-              <span class="cart-shipping-bar__success">🎉 Gefeliciteerd, je hebt gratis verzending!</span>
-            {%- else -%}
-              <span class="cart-shipping-bar__default">Nog <strong data-shipping-remaining>{{ fs_remaining | strip }}</strong> voor gratis verzending</span>
-            {%- endif -%}
+            <span class="cart-shipping-bar__success">🎉 Gefeliciteerd, je hebt gratis verzending!</span>
+            <span class="cart-shipping-bar__default">Nog <strong data-shipping-remaining>{{ fs_remaining | strip }}</strong> voor gratis verzending</span>
           </div>
           <div class="cart-shipping-bar__track">
             <div class="cart-shipping-bar__fill" data-shipping-fill style="width: {{ fs_percent }}%"></div>
@@ -85,8 +82,15 @@
             text-align: center;
           }
           .cart-shipping-bar__success {
+            display: none;
             color: #1a7d3c;
             font-weight: 600;
+          }
+          .cart-shipping-bar--qualified .cart-shipping-bar__success {
+            display: inline;
+          }
+          .cart-shipping-bar--qualified .cart-shipping-bar__default {
+            display: none;
           }
           .cart-shipping-bar__track {
             height: 4px;
@@ -107,33 +111,40 @@
 
         <script>
           (function() {
-            function updateShippingBar() {
+            function updateShippingBar(cartData) {
               var bar = document.querySelector('[data-shipping-bar]');
               if (!bar) return;
-              var limitEl = bar.getAttribute('data-limit');
-              var limit = parseFloat(limitEl) * 100;
+              var limit = parseFloat(bar.getAttribute('data-limit')) * 100;
               var fill = bar.querySelector('[data-shipping-fill]');
               var remainingEl = bar.querySelector('[data-shipping-remaining]');
 
-              fetch('/cart.js')
-                .then(function(r) { return r.json(); })
-                .then(function(cart) {
-                  var subtotal = cart.total_price;
-                  var percent = Math.min(100, Math.round(subtotal / limit * 100));
-                  if (fill) fill.style.width = percent + '%';
+              function applyCart(cart) {
+                var subtotal = cart.total_price;
+                var percent = Math.min(100, Math.round(subtotal / limit * 100));
+                if (fill) fill.style.width = percent + '%';
 
-                  var qualified = subtotal >= limit;
-                  bar.classList.toggle('cart-shipping-bar--qualified', qualified);
+                var qualified = subtotal >= limit;
+                bar.classList.toggle('cart-shipping-bar--qualified', qualified);
 
-                  if (remainingEl) {
-                    var remaining = limit - subtotal;
-                    if (remaining < 0) remaining = 0;
-                    remainingEl.textContent = (remaining / 100).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
-                  }
-                });
+                if (remainingEl) {
+                  var remaining = Math.max(0, limit - subtotal);
+                  remainingEl.textContent = (remaining / 100).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
+                }
+              }
+
+              if (cartData && cartData.total_price !== undefined) {
+                applyCart(cartData);
+              } else {
+                fetch('/cart.js').then(function(r) { return r.json(); }).then(applyCart);
+              }
             }
 
-            document.addEventListener('cart:updated', updateShippingBar);
+            document.addEventListener('theme:cart:change', function(e) {
+              updateShippingBar(e.detail && e.detail.cart);
+            });
+            document.addEventListener('theme:cart:reload', function() {
+              updateShippingBar();
+            });
           })();
         </script>
       {%- endif -%}
