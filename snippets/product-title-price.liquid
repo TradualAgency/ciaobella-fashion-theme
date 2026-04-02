@@ -117,7 +117,8 @@
 
   {%- if template contains 'product' -%}
     <div class="product__shipping-info">
-      <p>{{ 'products.product.free_shipping_notice' | t }}</p>
+      <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.28362 1.5C9.28362 0.671573 9.95519 0 10.7836 0C11.612 0 12.2836 0.671573 12.2836 1.5V10.0673V11.5673H10.7836H2.21631C1.38788 11.5673 0.716309 10.8957 0.716309 10.0673C0.716309 9.23888 1.38788 8.56731 2.21631 8.56731H7.56687L2.10755 3.10799C1.52176 2.5222 1.52176 1.57246 2.10755 0.986669C2.69334 0.400882 3.64308 0.400882 4.22887 0.986669L9.28362 6.04141V1.5Z" fill="currentColor"/></svg>
+      <p><strong>{{ 'products.product.free_shipping_notice' | t }}</strong></p>
       <p>{{ 'products.product.delivery_notice' | t }}</p>
     </div>
   {%- endif -%}
