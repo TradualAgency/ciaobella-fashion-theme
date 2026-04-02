@@ -1,6 +1,7 @@
 <!-- Easter Egg Hunt - Pasen 2026 -->
 <style>
   .easter-egg {
+    display: none;
     position: fixed;
     z-index: 9998;
     cursor: pointer;
@@ -148,15 +149,18 @@
     var codeEl = document.getElementById('easter-code');
     var copyMsg = document.getElementById('easter-copy-msg');
 
-    // Random position within viewport
-    var maxX = window.innerWidth - 50;
-    var maxY = window.innerHeight - 50;
-    var posX = Math.floor(Math.random() * (maxX - 60)) + 30;
-    var posY = Math.floor(Math.random() * (maxY - 100)) + 80;
+    // Verschijn na 20-60 seconden op een willekeurige positie
+    var delay = Math.floor(Math.random() * 40000) + 20000;
+    setTimeout(function() {
+      var maxX = window.innerWidth - 50;
+      var maxY = window.innerHeight - 50;
+      var posX = Math.floor(Math.random() * (maxX - 60)) + 30;
+      var posY = Math.floor(Math.random() * (maxY - 100)) + 80;
 
-    egg.style.left = posX + 'px';
-    egg.style.top = posY + 'px';
-    egg.style.display = 'block';
+      egg.style.left = posX + 'px';
+      egg.style.top = posY + 'px';
+      egg.style.display = 'block';
+    }, delay);
 
     egg.addEventListener('click', function() {
       egg.style.display = 'none';
