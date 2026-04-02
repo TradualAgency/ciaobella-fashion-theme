@@ -53,7 +53,7 @@
     "cart_custom_message_enable": false,
     "cart_color_bg": "palette--light bg--accent",
     "cart_show_additional_buttons": false,
-    "cart_upsell_collection": "cart-upsell",
+    "cart_upsell_collection": "upsell-cart",
     "search_articles": false,
     "collection_text_alignment": "text-center",
     "product_grid_aspect_ratio": 1.2,
@@ -154,14 +154,7 @@
         "settings": {}
       }
     },
-    "content_for_index": [],
-    "blocks": {
-      "14060646107696862457": {
-        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": false,
-        "settings": {}
-      }
-    }
+    "content_for_index": []
   },
   "presets": {
     "Bright": {
