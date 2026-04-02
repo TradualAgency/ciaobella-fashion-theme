@@ -178,7 +178,7 @@
     {%- comment -%} Vaste upsell slider op basis van collectie {%- endcomment -%}
     {%- assign upsell_collection = collections[settings.cart_upsell_collection] -%}
     {%- if upsell_collection != blank and upsell_collection.products.size > 0 -%}
-      <div class="cu-slider" id="cart-upsell-slider">
+      <div class="cu-slider cart--hidden" id="cart-upsell-slider" data-cart-bar>
         <div class="cu-slider__header">
           <span class="cu-slider__label">Misschien ook leuk</span>
           <div class="cu-slider__nav">
