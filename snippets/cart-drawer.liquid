@@ -519,31 +519,20 @@
                 fetch('/cart/add.js', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-                  body: JSON.stringify({ id: variantId, quantity: 1 })
+                  body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
                 })
                 .then(function(r) { return r.json(); })
                 .then(function() {
                   btn.classList.remove('is-loading');
                   btn.classList.add('is-done');
                   btn.querySelector('.cu-card__btn-ready').textContent = 'Toegevoegd ✓';
-                  btn.disabled = false;
-                  // Trigger cart refresh
-                  document.dispatchEvent(new CustomEvent('cart:item-added'));
-                  fetch('/?section_id=api-cart-items').then(function(r) { return r.text(); }).then(function(html) {
-                    var doc = new DOMParser().parseFromString(html, 'text/html');
-                    var newItems = doc.querySelector('[data-line-items]');
-                    var currentItems = document.querySelector('[data-line-items]');
-                    if (newItems && currentItems) currentItems.innerHTML = newItems.innerHTML;
-                    // Update cart count
-                    return fetch('/cart.js');
-                  }).then(function(r) { return r.json(); }).then(function(cart) {
-                    var countEls = document.querySelectorAll('[data-cart-count]');
-                    countEls.forEach(function(el) { el.textContent = cart.item_count; });
-                    var totalEls = document.querySelectorAll('[data-cart-final]');
-                    totalEls.forEach(function(el) {
-                      el.textContent = (cart.total_price / 100).toLocaleString('nl-NL', { style: 'currency', currency: 'EUR' });
-                    });
-                  });
+                  setTimeout(function() {
+                    btn.classList.remove('is-done');
+                    btn.querySelector('.cu-card__btn-ready').textContent = 'Toevoegen aan winkelwagen';
+                    btn.disabled = false;
+                  }, 2000);
+                  // Trigger theme cart reload (updates line items, count, totals, shipping bar)
+                  document.dispatchEvent(new CustomEvent('theme:cart:reload'));
                 })
                 .catch(function() {
                   btn.classList.remove('is-loading');
