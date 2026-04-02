@@ -170,7 +170,7 @@
 
         {% for discount in order.cart_level_discount_applications %}
           <tr>
-            <td colspan="4" class="small-down--hide">{{ 'customer.order.discount' | t }} ({{ discount.title }})</strong></td>
+            <td colspan="4" class="small-down--hide">{{ 'customer.order.discount' | t }} ({{ discount.title }})</td>
             <td data-label="{{ 'customer.order.discount' | t }}">
               {% if settings.currency_code_enable %}
                 -{{ discount.total_allocated_amount | money_with_currency }}
