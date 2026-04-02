@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "general": {
     "swatches": {
@@ -118,7 +127,7 @@
       "remove": "Remove",
       "note": "Special instructions for seller",
       "subtotal": "Subtotal",
-      "shipping_at_checkout": "Shipping & taxes calculated at checkout",
+      "shipping_at_checkout": "",
       "update": "Update Cart",
       "checkout": "Check Out",
       "empty": "Your cart is currently empty.",
@@ -351,15 +360,15 @@
     "product": {
       "regular_price": "Regular price",
       "sold_out": "Sold Out",
-      "sale_type": "Sale type",      
-      "pre_order": "Pre-Order",      
+      "sale_type": "Sale type",
+      "pre_order": "Pre-Order",
       "unavailable": "Unavailable",
       "sale": "Sale",
       "new": "New",
       "on_sale": "On Sale",
       "on_sale_from": "On Sale from",
       "from": "From",
-      "unit_price_label": "Unit price", 
+      "unit_price_label": "Unit price",
       "view_in_space": "View in your space",
       "quantity": "Quantity",
       "add_to_cart": "Add to Cart",
@@ -399,7 +408,7 @@
       "initial_value": "Gift card value: {{ value }}"
     }
   },
-  "date_formats":{
+  "date_formats": {
     "month_day_year": "%B %d, %Y"
   }
 }
