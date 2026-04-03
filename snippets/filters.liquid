@@ -24,11 +24,11 @@
       {%- endif -%}
 
       <div class="filter__inner" data-swapper-wrapper>
-        <button class="filter__heading accordion-is-open"
+        <button class="filter__heading"
           data-accordion-trigger="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
           aria-controls="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
           aria-haspopup="true"
-          aria-expanded="true"
+          aria-expanded="false"
         >
           <span class="filter__heading-label">{{ filter.label }}</span>
 
