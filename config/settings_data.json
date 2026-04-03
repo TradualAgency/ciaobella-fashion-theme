@@ -83,7 +83,7 @@
           "toolbar": {
             "type": "toolbar",
             "settings": {
-              "announcement_text": "<p><strong>Elke week nieuwe items! | Voor 16:00 besteld = vandaag verzonden!  | GRATIS verzending vanaf €100,- |</strong></p>",
+              "announcement_text": "<p><strong>Elke week nieuwe items! | Voor 17:00 besteld = vandaag verzonden!  | GRATIS verzending vanaf €100,- |</strong></p>",
               "secondary_linklist": "",
               "show_menu_desktop": true,
               "show_menu_mobile": true,
