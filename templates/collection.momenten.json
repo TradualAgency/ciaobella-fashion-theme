@@ -52,7 +52,7 @@
         "color_bg": "palette--light bg--neutral",
         "aspect_ratio": 1.2,
         "padding_top": 20,
-        "padding_bottom": 20
+        "padding_bottom": 0
       }
     },
     "main": {
