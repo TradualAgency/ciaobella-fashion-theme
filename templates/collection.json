@@ -9,69 +9,26 @@
  */
 {
   "sections": {
-    "5190749a-df37-4be0-b456-d7ee4cc3339e": {
-      "type": "section-hero",
-      "disabled": true,
+    "banner": {
+      "type": "collection-banner",
       "blocks": {
-        "template--16602373456099__5190749a-df37-4be0-b456-d7ee4cc3339e-1681827950115f29f0-0": {
+        "collections": {
           "type": "heading",
-          "disabled": true,
-          "settings": { "heading": "<p>Image banner<\/p>", "text_size": 10 }
-        },
-        "template--16602373456099__5190749a-df37-4be0-b456-d7ee4cc3339e-1681827950115f29f0-1": {
-          "type": "text",
-          "disabled": true,
           "settings": {
-            "text": "<p>This area is used to describe your store<\/p>",
-            "text_size": 6,
-            "text_columns": 1
+            "text_size": 9
           }
         },
-        "template--16602373456099__5190749a-df37-4be0-b456-d7ee4cc3339e-1681827950115f29f0-2": {
-          "type": "button",
-          "disabled": true,
+        "filters": {
+          "type": "text",
           "settings": {
-            "button_text": "Learn More",
-            "button_url": "",
-            "button_size": "btn--large",
-            "button_style": "hero__btn btn",
-            "button_color": "btn--white"
+            "text_size": 5
           }
         }
       },
       "block_order": [
-        "template--16602373456099__5190749a-df37-4be0-b456-d7ee4cc3339e-1681827950115f29f0-0",
-        "template--16602373456099__5190749a-df37-4be0-b456-d7ee4cc3339e-1681827950115f29f0-1",
-        "template--16602373456099__5190749a-df37-4be0-b456-d7ee4cc3339e-1681827950115f29f0-2"
+        "collections",
+        "filters"
       ],
-      "settings": {
-        "image": "shopify:\/\/shop_images\/Sale1.png",
-        "mobile_image": "shopify:\/\/shop_images\/Sale1.png",
-        "image_link": "",
-        "bg_position": "center-center",
-        "height": "use_image",
-        "overlay_opacity": 0,
-        "overlay_color": "#000000",
-        "flex_align": "align--middle-left",
-        "align_text": "text-left",
-        "color": "text--white",
-        "color_bg": "hero__content--transparent",
-        "width": "wrapper--narrow",
-        "padding_top": 18,
-        "padding_bottom": 0
-      }
-    },
-    "banner": {
-      "type": "collection-banner",
-      "blocks": {
-        "collections": { "type": "heading", "settings": { "text_size": 9 } },
-        "filters": {
-          "type": "text",
-          "disabled": true,
-          "settings": { "text_size": 5 }
-        }
-      },
-      "block_order": ["collections", "filters"],
       "settings": {
         "flex_align": "align--middle-left",
         "show_title_below": false,
@@ -116,6 +73,9 @@
       }
     }
   },
-  "order": ["5190749a-df37-4be0-b456-d7ee4cc3339e", "banner", "subcollections", "main"]
+  "order": [
+    "banner",
+    "subcollections",
+    "main"
+  ]
 }
-
