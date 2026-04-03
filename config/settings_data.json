@@ -39,7 +39,7 @@
     "color_error": "#ff8484",
     "layout_site_width": 1100,
     "layout_container_enable": false,
-    "radius_images": "square",
+    "radius_images": "rounded",
     "decoration_style": "decoration-none",
     "parallax_enable": false,
     "social_instagram_link": "https://www.instagram.com/ciaobellafashion.nl/",
