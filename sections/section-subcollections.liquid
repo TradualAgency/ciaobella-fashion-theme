@@ -1,0 +1,161 @@
+{%- assign subcollections = collection.metafields.custom.subcollections.value -%}
+{%- if subcollections != blank -%}
+
+<style>
+  .subcollections-nav {
+    --PT: {{ section.settings.padding_top }}px;
+    --PB: {{ section.settings.padding_bottom }}px;
+    padding-top: var(--PT);
+    padding-bottom: var(--PB);
+  }
+
+  .subcollections-nav__track {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 0 16px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .subcollections-nav__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .subcollections-nav__item {
+    flex: 0 0 40%;
+    max-width: 40%;
+  }
+
+  @media (min-width: 768px) {
+    .subcollections-nav__item {
+      flex: 0 0 22%;
+      max-width: 22%;
+    }
+    .subcollections-nav__track {
+      padding: 0 24px;
+    }
+  }
+
+  .subcollections-nav__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .subcollections-nav__image {
+    position: relative;
+    overflow: hidden;
+    padding-top: {{ section.settings.aspect_ratio | times: 100 }}%;
+    background: #f0f0f0;
+  }
+
+  .subcollections-nav__image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .subcollections-nav__link:hover .subcollections-nav__image img {
+    transform: scale(1.04);
+  }
+
+  .subcollections-nav__title {
+    margin-top: 8px;
+    font-size: 0.85em;
+    text-align: center;
+    font-weight: 500;
+  }
+</style>
+
+<div class="subcollections-nav {{ section.settings.color_bg }}">
+  <div class="subcollections-nav__track">
+    {%- for sub in subcollections -%}
+      <div class="subcollections-nav__item">
+        <a href="{{ sub.url }}" class="subcollections-nav__link" aria-label="{{ sub.title | escape }}">
+          <div class="subcollections-nav__image">
+            {%- if sub.image -%}
+              <img
+                src="{{ sub.image | image_url: width: 400 }}"
+                alt="{{ sub.title | escape }}"
+                loading="lazy"
+                width="400"
+                height="{{ 400 | divided_by: sub.image.aspect_ratio | round }}">
+            {%- elsif sub.products.first -%}
+              <img
+                src="{{ sub.products.first.featured_media.preview_image | image_url: width: 400 }}"
+                alt="{{ sub.title | escape }}"
+                loading="lazy"
+                width="400">
+            {%- else -%}
+              {% capture svg_name %}collection-{{ forloop.index | modulo: 6 | at_least: 1 }}{% endcapture %}
+              {{ svg_name | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <div class="subcollections-nav__title">{{ sub.title }}</div>
+        </a>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Subcollecties slider",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_bg",
+      "label": "Achtergrondkleur",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Standaard" },
+        { "value": "palette--light bg--accent", "label": "Licht" },
+        { "value": "palette--dark bg--invert", "label": "Donker" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio",
+      "min": 0.5,
+      "max": 1.5,
+      "step": 0.1,
+      "unit": ":1",
+      "label": "Beeldverhouding afbeelding",
+      "info": "Breed naar smal",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding boven",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding onder",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subcollecties slider",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

@@ -79,6 +79,15 @@
         "padding_bottom": 0
       }
     },
+    "subcollections": {
+      "type": "section-subcollections",
+      "settings": {
+        "color_bg": "palette--light bg--neutral",
+        "aspect_ratio": 1.2,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
     "main": {
       "type": "collection",
       "settings": {
@@ -98,6 +107,6 @@
       }
     }
   },
-  "order": ["5190749a-df37-4be0-b456-d7ee4cc3339e", "banner", "main"]
+  "order": ["5190749a-df37-4be0-b456-d7ee4cc3339e", "banner", "subcollections", "main"]
 }
 
