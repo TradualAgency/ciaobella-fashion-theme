@@ -165,15 +165,6 @@
         "custom_liquid": "<script type=\"text/javascript\">\nvar _learnq = _learnq || [];\nfunction addedToCart() {\n  fetch(`${window.location.origin}/cart.js`)\n  .then(res => res.clone().json().then(data => {\n    var cart = {\n      total_price: data.total_price/100,\n      $value: data.total_price/100,\n      total_discount: data.total_discount,\n      original_total_price: data.original_total_price/100,\n      items: data.items\n    }\n    if (item !== 'undefined') {\n      cart = Object.assign(cart, item)\n    }\n    _learnq.push(['track', 'Added to Cart', cart])\n  }))\n} \n(function (ns, fetch) {\n  ns.fetch = function() {\n    const response = fetch.apply(this, arguments);\n    response.then(res => {\n      if (`${window.location.origin}/cart/add.js`\n      \t.includes(res.url)) {\n        \taddedToCart()\n      }\n    });\n    return response\n  }\n}(window, window.fetch))\n$(document).ajaxComplete(function(event, request, settings){\n  if(settings.url == \"/cart/add.js\"){\n      addedToCart()\n  }\n})</script>"
       }
     },
-    "1774991701fe66120e": {
-      "type": "apps",
-      "settings": {
-        "color_bg": "palette--light bg--neutral",
-        "width": "wrapper",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "17751569809b5daa72": {
       "type": "apps",
       "blocks": {
@@ -203,7 +194,6 @@
     "recent",
     "related",
     "1657978699a85f27f4",
-    "1774991701fe66120e",
     "17751569809b5daa72"
   ]
 }
