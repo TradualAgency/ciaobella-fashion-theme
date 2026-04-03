@@ -94,25 +94,6 @@
             "icon_name_5": "",
             "raw_content_5": ""
           }
-        },
-        "upsell": {
-          "type": "upsell",
-          "disabled": true,
-          "settings": {
-            "product": ""
-          }
-        },
-        "pickup": {
-          "type": "pickup",
-          "disabled": true,
-          "settings": {}
-        },
-        "sharing": {
-          "type": "sharing",
-          "disabled": true,
-          "settings": {
-            "share_label": "Share"
-          }
         }
       },
       "block_order": [
@@ -123,10 +104,7 @@
         "shop_the_look_chBPVF",
         "icon-1",
         "icon-2",
-        "description",
-        "upsell",
-        "pickup",
-        "sharing"
+        "description"
       ],
       "settings": {
         "bg": "palette--light bg--neutral",
