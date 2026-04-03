@@ -86,7 +86,7 @@
             </svg>
           </button>
           <div class="collection-faq__answer rte" id="faq-answer-{{ forloop.index }}">
-            {{ item.answer }}
+            {{ item.answer | metafield_tag }}
           </div>
         </li>
       {%- endfor -%}
