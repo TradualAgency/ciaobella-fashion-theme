@@ -1,5 +1,9 @@
 {
   "general": {
+    "404": {
+      "title": "404 Siden findes ikke",
+      "subtext_html": "Siden du leder efter findes ikke. Klik <a href=\"/collections/all\">her</a> for at fortsætte med at handle."
+    },
     "swatches": {
       "color": "Farbe"
     },
@@ -34,10 +38,6 @@
     "breadcrumbs": {
       "home": "Hjem"
     },
-    "404": {
-      "title": "404 Siden findes ikke",
-      "subtext_html": "Siden du leder efter findes ikke. Klik <a href=\"\/collections\/all\">her<\/a> for at fortsætte med at handle."
-    },
     "password_page": {
       "opening_soon": "Åbner Snart",
       "spread_the_word": "Spred ordet",
@@ -50,7 +50,7 @@
       "signup_form_email_placeholder": "Din email",
       "signup_form_submit": "Send",
       "signup_form_success": "Vi sender dig en email lige inden vi åbner!",
-      "admin_link_html": "Ejer du denne butik? <a href=\"\/admin\">Log ind her<\/a>",
+      "admin_link_html": "Ejer du denne butik? <a href=\"/admin\">Log ind her</a>",
       "password_link": "Åben ved brug af adgangskode",
       "powered_by_shopify_html": "Denne butik vil blive drevet af {{ shopify }}"
     },
@@ -381,7 +381,9 @@
         "unavailable": "Kan ikke indlæse afhentningstilgængelighed",
         "refresh": "Opdater"
       },
-      "each": "hver"
+      "each": "hver",
+      "free_shipping_notice": "TODO",
+      "delivery_notice": "TODO"
     }
   },
   "gift_cards": {

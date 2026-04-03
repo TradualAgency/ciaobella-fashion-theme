@@ -1,5 +1,9 @@
 {
   "general": {
+    "404": {
+      "title": "404 - Page non trouvée",
+      "subtext_html": "Cette page n'est pas disponible. <a href=\"/collections/all\">Retourner au magasinage</a>"
+    },
     "swatches": {
       "color": "Couleur"
     },
@@ -33,10 +37,6 @@
     },
     "breadcrumbs": {
       "home": "Accueil"
-    },  
-    "404": {
-      "title": "404 - Page non trouvée",
-      "subtext_html": "Cette page n'est pas disponible. <a href=\"\/collections\/all\">Retourner au magasinage<\/a>"
     },
     "newsletter_form": {
       "newsletter_email": "salut@email.com",
@@ -56,7 +56,7 @@
       "signup_form_email_placeholder": "Votre courriel",
       "signup_form_submit": "Soumettre",
       "signup_form_success": "Nous vous ferons parvenir un courriel juste avant l'ouverture!",
-      "admin_link_html": "Êtes-vous le propriétaire de la boutique? <a href=\"\/admin\">Connectez-vous ici<\/a>.",
+      "admin_link_html": "Êtes-vous le propriétaire de la boutique? <a href=\"/admin\">Connectez-vous ici</a>.",
       "password_link": "Entrer avec un mot de passe",
       "powered_by_shopify_html": "Cette boutique sera propulsée par {{ shopify }}"
     },
@@ -381,7 +381,9 @@
         "unavailable": "Impossible de charger la disponibilité du service de retrait",
         "refresh": "Actualiser"
       },
-      "each": "chaque"
+      "each": "chaque",
+      "free_shipping_notice": "TODO",
+      "delivery_notice": "TODO"
     }
   },
   "gift_cards": {
