@@ -42,7 +42,7 @@
           "settings": {
             "variant_form": "button",
             "show_quantity": true,
-            "show_remaining": false,
+            "show_remaining": true,
             "enable_payment_button": false,
             "subscriptions_enable_selectors": false,
             "info_page": ""
