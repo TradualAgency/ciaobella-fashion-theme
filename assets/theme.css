@@ -16647,11 +16647,6 @@ form .errors ul,
   margin: 0 auto;
 }
 
-/* Variant Countdown */
-.product__button__meta {
-  margin-top: 30px;
-}
-
 .product__button__meta--packed {
   display: flex;
   justify-content: space-between;
