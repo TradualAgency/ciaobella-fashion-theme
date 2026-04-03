@@ -1,0 +1,192 @@
+{%- assign faq_items = collection.metafields.custom.faq.value -%}
+{%- if faq_items != blank and faq_items.size > 0 -%}
+
+<style>
+  .collection-faq {
+    --PT: {{ section.settings.padding_top }}px;
+    --PB: {{ section.settings.padding_bottom }}px;
+  }
+
+  .collection-faq__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .collection-faq__item {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .collection-faq__item:first-child {
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .collection-faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 18px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    text-align: left;
+    color: inherit;
+    line-height: 1.4;
+  }
+
+  .collection-faq__question:hover {
+    opacity: 0.7;
+  }
+
+  .collection-faq__icon {
+    flex-shrink: 0;
+    margin-left: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .collection-faq__question[aria-expanded="true"] .collection-faq__icon {
+    transform: rotate(45deg);
+  }
+
+  .collection-faq__answer {
+    display: none;
+    padding: 0 0 18px;
+    line-height: 1.6;
+  }
+
+  .collection-faq__answer.is-open {
+    display: block;
+  }
+</style>
+
+<div class="collection-faq {{ section.settings.color_bg }}" style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+  <div class="{{ section.settings.width }} section-padding">
+    {%- if section.settings.title != blank -%}
+      {% render 'decos', direction: 'down' %}
+      <div class="title-decoration"></div>
+      <h2 class="title--decorated h3">{{ section.settings.title | escape }}</h2>
+    {%- endif -%}
+
+    <ul class="collection-faq__list">
+      {%- for item in faq_items -%}
+        <li class="collection-faq__item">
+          <button
+            type="button"
+            class="collection-faq__question"
+            aria-expanded="false"
+            aria-controls="faq-answer-{{ forloop.index }}"
+          >
+            <span>{{ item.question }}</span>
+            <svg class="collection-faq__icon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="7" y1="0" x2="7" y2="14"/>
+              <line x1="0" y1="7" x2="14" y2="7"/>
+            </svg>
+          </button>
+          <div class="collection-faq__answer rte" id="faq-answer-{{ forloop.index }}">
+            {{ item.answer }}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for item in faq_items -%}
+      {
+        "@type": "Question",
+        "name": {{ item.question | json }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ item.answer | strip_html | json }}
+        }
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+
+<script>
+  (function() {
+    var items = document.querySelectorAll('.collection-faq__question');
+    items.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        var answer = document.getElementById(btn.getAttribute('aria-controls'));
+        if (answer) answer.classList.toggle('is-open');
+      });
+    });
+  })();
+</script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collectie FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titel",
+      "default": "Veelgestelde vragen"
+    },
+    {
+      "type": "select",
+      "id": "color_bg",
+      "label": "Achtergrondkleur",
+      "default": "palette--light bg--neutral",
+      "options": [
+        { "value": "palette--light bg--neutral", "label": "Standaard" },
+        { "value": "palette--light bg--accent", "label": "Licht" },
+        { "value": "palette--dark bg--invert", "label": "Donker" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Breedte",
+      "default": "wrapper",
+      "options": [
+        { "value": "wrapper--full", "label": "Volledig met padding" },
+        { "value": "wrapper", "label": "Paginabreedte" },
+        { "value": "wrapper--narrow", "label": "Paginabreedte smal" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding boven",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding onder",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collectie FAQ",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}
