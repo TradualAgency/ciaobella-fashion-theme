@@ -39,12 +39,11 @@
         "collections",
         "filters"
       ],
-      "disabled": true,
       "settings": {
         "flex_align": "align--middle-left",
         "show_title_below": false,
         "show_description_below": false,
-        "show_image": true,
+        "show_image": false,
         "bg_position": "center-center",
         "image_height": "use_screen_one_fifth",
         "overlay_opacity": 20,
