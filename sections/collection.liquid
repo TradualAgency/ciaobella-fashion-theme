@@ -137,19 +137,22 @@
 
       <div class="grid collection-contents" data-collection-sidebar>
         {%- if section.settings.collection_sorting or section.settings.filters -%}
-          <div class="collection-filters__mobile-buttons medium-up--hide">
-            {%- if section.settings.filters -%}
-              <button type="button" class="filters__button" data-filters-toggle="filters-form">
-                {{ 'collections.sidebar.tags' | t }}
-
-                {%- if counter > 0 -%}
-                  <span class="filters__active-count">{{ counter }}</span>
-                {%- endif -%}
+          <div class="collection-filters__mobile-chips medium-up--hide">
+            {%- if section.settings.collection_sorting -%}
+              <button type="button" class="filter-chip" data-filters-toggle="filters-form" data-filter-open="sort">
+                {{ 'collections.sorting.title' | t }}
               </button>
             {%- endif -%}
 
-            {%- if section.settings.collection_sorting -%}
-              {%- render 'collection-sorting', class: 'filters__button', unique: 'mobile' -%}
+            {%- if section.settings.filters -%}
+              {%- for filter in collection.filters -%}
+                <button type="button" class="filter-chip" data-filters-toggle="filters-form" data-filter-open="{{ filter.label | handle }}-{{ forloop.index }}">
+                  {{ filter.label }}
+                  {%- if filter.active_values.size > 0 -%}
+                    <span class="filter-chip__count">{{ filter.active_values.size }}</span>
+                  {%- endif -%}
+                </button>
+              {%- endfor -%}
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -210,6 +213,45 @@
   theme.collectionStrings = {
     sortBy: '{{ collection.sort_by | default: collection.default_sort_by }}'
   }
+
+  /* Mobile filter chips: open the right accordion on click */
+  (function() {
+    var chips = document.querySelectorAll('.filter-chip[data-filter-open]');
+    if (!chips.length) return;
+
+    chips.forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        var targetId = chip.getAttribute('data-filter-open');
+
+        /* Wait for the drawer to open */
+        setTimeout(function() {
+          var form = document.querySelector('[data-sidebar-filter-form="filters-form"]');
+          if (!form) return;
+
+          /* Collapse all accordions */
+          form.querySelectorAll('[data-accordion-trigger]').forEach(function(trigger) {
+            trigger.setAttribute('aria-expanded', 'false');
+            trigger.classList.remove('accordion-is-open');
+            var bodyId = trigger.getAttribute('aria-controls');
+            var body = document.getElementById(bodyId);
+            if (body) body.style.display = 'none';
+          });
+
+          /* Expand the target accordion */
+          var target = document.getElementById('accordion-' + targetId);
+          if (target) {
+            target.style.display = '';
+            var trigger = form.querySelector('[aria-controls="accordion-' + targetId + '"]');
+            if (trigger) {
+              trigger.setAttribute('aria-expanded', 'true');
+              trigger.classList.add('accordion-is-open');
+              trigger.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        }, 50);
+      });
+    });
+  })();
 </script>
 
 

@@ -13,7 +13,6 @@
     display: flex;
     overflow-x: auto;
     gap: 10px;
-    padding: 0 16px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
@@ -28,11 +27,22 @@
 
   @media (min-width: 768px) {
     .subcollections-nav__item {
-      flex: 0 0 22%;
-      max-width: 22%;
+      flex: 0 0 auto;
+      max-width: none;
+      width: 140px;
     }
-    .subcollections-nav__track {
-      padding: 0 24px;
+    .subcollections-nav__image {
+      padding-top: 0 !important;
+      height: 180px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .subcollections-nav__item {
+      width: 150px;
+    }
+    .subcollections-nav__image {
+      height: 200px;
     }
   }
 
@@ -72,6 +82,7 @@
 </style>
 
 <div class="subcollections-nav {{ section.settings.color_bg }}">
+  <div class="wrapper">
   <div class="subcollections-nav__track">
     {%- for sub in subcollections -%}
       <div class="subcollections-nav__item">
@@ -99,6 +110,7 @@
         </a>
       </div>
     {%- endfor -%}
+  </div>
   </div>
 </div>
 

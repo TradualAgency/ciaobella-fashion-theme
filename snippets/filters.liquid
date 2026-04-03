@@ -238,6 +238,37 @@
       {% render 'icon-close' %}
     </button>
 
+    {%- comment -%} Sort accordion for mobile filter drawer {%- endcomment -%}
+    {%- assign sort_options = collection.sort_options -%}
+    {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+    {%- if sort_options.size > 0 -%}
+      <div class="filter medium-up--hide">
+        <div class="filter__inner">
+          <button class="filter__heading"
+            data-accordion-trigger="accordion-sort"
+            aria-controls="accordion-sort"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span class="filter__heading-label">{{ 'collections.sorting.title' | t }}</span>
+            <span class="filter__heading-chevron">
+              {% render 'icon-arrow-medium-right' %}
+            </span>
+          </button>
+          <ul class="filter__options filter__navigation__list" data-accordion-body id="accordion-sort" style="display: none;">
+            {%- for option in sort_options -%}
+              <li class="filter__option">
+                <a href="#" data-sort-link data-value="{{ option.value }}" {% if current_sort == option.value %}aria-current="true"{% endif %}>
+                  {%- if current_sort == option.value -%}{%- render 'icon-check-slim' -%}{%- endif -%}
+                  {{ option.name }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%}
+
     {{ filters_markup }}
   </form>
 </div>
