@@ -9,16 +9,6 @@
  */
 {
   "sections": {
-    "section_subcollections_VGHEak": {
-      "type": "section-subcollections",
-      "name": "Subcollecties slider",
-      "settings": {
-        "color_bg": "palette--light bg--neutral",
-        "aspect_ratio": 1.2,
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
-    },
     "banner": {
       "type": "collection-banner",
       "blocks": {
@@ -55,6 +45,16 @@
         "padding_bottom": 0
       }
     },
+    "section_subcollections_VGHEak": {
+      "type": "section-subcollections",
+      "name": "Subcollecties slider",
+      "settings": {
+        "color_bg": "palette--light bg--neutral",
+        "aspect_ratio": 1.2,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
     "main": {
       "type": "collection",
       "settings": {
@@ -75,8 +75,8 @@
     }
   },
   "order": [
-    "section_subcollections_VGHEak",
     "banner",
+    "section_subcollections_VGHEak",
     "main"
   ]
 }
