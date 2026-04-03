@@ -98,7 +98,7 @@
     {%- assign rating_value = product.metafields.reviews.rating.value.rating | round: 1 -%}
     {%- assign rating_max = product.metafields.reviews.rating.value.scale_max | default: 5 -%}
     {%- assign rating_count = product.metafields.reviews.rating_count | default: 0 -%}
-    <a href="#judgeme-reviews" class="product__review-badge" aria-label="{{ rating_value }} van {{ rating_max }} sterren, {{ rating_count }} reviews">
+    <a href="#judgeme_product_reviews" class="product__review-badge" aria-label="{{ rating_value }} van {{ rating_max }} sterren, {{ rating_count }} reviews">
       <span class="product__review-stars" aria-hidden="true">
         {%- for i in (1..5) -%}
           {%- assign i_minus_half = i | minus: 0.5 -%}
