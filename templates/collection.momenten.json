@@ -9,45 +9,14 @@
  */
 {
   "sections": {
-    "section_hero_38qGw9": {
-      "type": "section-hero",
-      "blocks": {
-        "heading_ajUNVz": {
-          "type": "heading",
-          "settings": {
-            "heading": "<p>{{ collection.title }}</p>",
-            "text_size": 10
-          }
-        },
-        "text_P79TCp": {
-          "type": "text",
-          "settings": {
-            "text": "{{ collection.description }}",
-            "text_size": 6,
-            "text_columns": 1
-          }
-        }
-      },
-      "block_order": [
-        "heading_ajUNVz",
-        "text_P79TCp"
-      ],
-      "name": "Image banner",
+    "section_subcollections_VGHEak": {
+      "type": "section-subcollections",
+      "name": "Subcollecties slider",
       "settings": {
-        "image": "{{ collection.image }}",
-        "mobile_image": "{{ collection.image }}",
-        "image_link": "",
-        "bg_position": "center-center",
-        "height": "use_screen_one_third",
-        "overlay_opacity": 15,
-        "overlay_color": "#000000",
-        "flex_align": "align--middle-left",
-        "align_text": "text-left",
-        "color": "text--white",
-        "color_bg": "hero__content--transparent",
-        "width": "wrapper--none",
-        "padding_top": 0,
-        "padding_bottom": 0
+        "color_bg": "palette--light bg--neutral",
+        "aspect_ratio": 1.2,
+        "padding_top": 20,
+        "padding_bottom": 20
       }
     },
     "banner": {
@@ -104,20 +73,9 @@
         "padding_top": 36,
         "padding_bottom": 64
       }
-    },
-    "section_subcollections_VGHEak": {
-      "type": "section-subcollections",
-      "name": "Subcollecties slider",
-      "settings": {
-        "color_bg": "palette--light bg--neutral",
-        "aspect_ratio": 1.2,
-        "padding_top": 20,
-        "padding_bottom": 20
-      }
     }
   },
   "order": [
-    "section_hero_38qGw9",
     "section_subcollections_VGHEak",
     "banner",
     "main"
