@@ -51,6 +51,7 @@
     "cart_continue_browsing": "shopify://collections/all",
     "show_free_shipping_message": true,
     "message": "",
+    "free_shipping_limit": "75",
     "cart_custom_message_enable": false,
     "cart_color_bg": "palette--light bg--accent",
     "cart_show_additional_buttons": false,
