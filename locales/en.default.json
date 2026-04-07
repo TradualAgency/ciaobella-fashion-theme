@@ -358,7 +358,7 @@
       "error_info": "Check that the product is available"
     },
     "product": {
-      "free_shipping_notice": "Free shipping on orders €100+",
+      "free_shipping_notice": "Free shipping on orders €75+",
       "delivery_notice": "Receive your order in 2 - 4 business days",
       "regular_price": "Regular price",
       "sold_out": "Sold Out",
