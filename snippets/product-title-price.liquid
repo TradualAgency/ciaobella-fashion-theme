@@ -15,8 +15,9 @@
     {% assign heading_size_class = block.settings.text_size | prepend: 'heading-size-' %}
 
     {% if template contains 'product' %}
-      <div class="trustpilot-widget" data-locale="nl-NL" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="62c2fea7dcda9a130ad54969" data-style-height="24px" data-style-width="100%" data-theme="light" data-min-review-count="10" data-style-alignment="left">
-        <a href="https://nl.trustpilot.com/review/www.ciaobellafashion.nl" target="_blank" rel="noopener">Trustpilot</a>
+      <div class="product__trustpilot-static">
+        <img src="https://cdn.shopify.com/s/files/1/0651/3541/1427/files/stars-5.svg?v=1776158727" alt="5 sterren" height="20" loading="lazy">
+        <span>4.8/5 &nbsp;·&nbsp; Uitstekend &nbsp;·&nbsp; 400+ reviews</span>
       </div>
       <h1 class="product__title {{ heading_size_class }}">{{ product.title | strip_html }}</h1>
     {% else %}
