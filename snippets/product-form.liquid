@@ -351,6 +351,16 @@
           {% endif %}
 
         </div>
+
+        <div class="product__payment-icons">
+          {% assign enabled_payment_types = 'ideal,klarna,bancontact,belfius,apple_pay,google_pay,visa,master,maestro,american_express,cartes_bancaires' | remove: ' ' | split: ',' %}
+          {% for type in enabled_payment_types %}
+            <span class="footer__icon footer__icon--payment">
+              {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+              <span class="visually-hidden">{{ type | capitalize | replace: '_', ' ' }}</span>
+            </span>
+          {% endfor %}
+        </div>
       </div>
       <script data-product-json type="application/json">
         {{ product | json }}

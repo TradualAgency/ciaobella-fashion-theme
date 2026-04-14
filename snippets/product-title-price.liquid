@@ -15,6 +15,9 @@
     {% assign heading_size_class = block.settings.text_size | prepend: 'heading-size-' %}
 
     {% if template contains 'product' %}
+      <div class="trustpilot-widget" data-locale="nl-NL" data-template-id="5419b6a8b0d04a076446a9ad" data-businessunit-id="62c2fea7dcda9a130ad54969" data-style-height="24px" data-style-width="100%" data-theme="light" data-min-review-count="10" data-style-alignment="left">
+        <a href="https://nl.trustpilot.com/review/www.ciaobellafashion.nl" target="_blank" rel="noopener">Trustpilot</a>
+      </div>
       <h1 class="product__title {{ heading_size_class }}">{{ product.title | strip_html }}</h1>
     {% else %}
       <h3 class="product__title">
@@ -93,27 +96,6 @@
       {% endif %}
     </div>
   </div>
-
-  {%- if template contains 'product' and product.metafields.reviews.rating.value != blank -%}
-    {%- assign rating_value = product.metafields.reviews.rating.value.rating | round: 1 -%}
-    {%- assign rating_max = product.metafields.reviews.rating.value.scale_max | default: 5 -%}
-    {%- assign rating_count = product.metafields.reviews.rating_count | default: 0 -%}
-    <a href="#judgeme_product_reviews" class="product__review-badge" aria-label="{{ rating_value }} van {{ rating_max }} sterren, {{ rating_count }} reviews">
-      <span class="product__review-stars" aria-hidden="true">
-        {%- for i in (1..5) -%}
-          {%- assign i_minus_half = i | minus: 0.5 -%}
-          {%- if rating_value >= i -%}
-            <svg class="product__review-star product__review-star--full" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          {%- elsif rating_value >= i_minus_half -%}
-            <svg class="product__review-star product__review-star--half" width="16" height="16" viewBox="0 0 24 24"><defs><linearGradient id="half-{{ i }}"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="none" stop-opacity="0"/></linearGradient></defs><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="url(#half-{{ i }})" stroke="currentColor" stroke-width="1"/></svg>
-          {%- else -%}
-            <svg class="product__review-star product__review-star--empty" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          {%- endif -%}
-        {%- endfor -%}
-      </span>
-      <span class="product__review-count">{{ rating_count }} {{ rating_count | pluralize: 'review', 'reviews' }}</span>
-    </a>
-  {%- endif -%}
 
   {%- if template contains 'product' -%}
     <div class="product__shipping-info">
