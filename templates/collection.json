@@ -47,6 +47,7 @@
     },
     "subcollections": {
       "type": "section-subcollections",
+      "disabled": true,
       "settings": {
         "color_bg": "palette--light bg--neutral",
         "aspect_ratio": 1.2,
