@@ -521,8 +521,20 @@
                   headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
                   body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
                 })
-                .then(function(r) { return r.json(); })
+                .then(function(r) {
+                  if (!r.ok) throw new Error('Add to cart failed');
+                  return r.json();
+                })
                 .then(function() {
+                  return fetch('/cart.js', {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                  });
+                })
+                .then(function(r) {
+                  if (!r.ok) throw new Error('Cart refresh failed');
+                  return r.json();
+                })
+                .then(function(cart) {
                   btn.classList.remove('is-loading');
                   btn.classList.add('is-done');
                   btn.querySelector('.cu-card__btn-ready').textContent = 'Toegevoegd ✓';
@@ -531,7 +543,12 @@
                     btn.querySelector('.cu-card__btn-ready').textContent = 'Toevoegen aan winkelwagen';
                     btn.disabled = false;
                   }, 2000);
-                  // Trigger theme cart reload (updates line items, count, totals, shipping bar)
+                  document.dispatchEvent(new CustomEvent('theme:cart:change', {
+                    detail: {
+                      cart: cart
+                    }
+                  }));
+                  // Trigger theme cart reload after cart state is synced
                   document.dispatchEvent(new CustomEvent('theme:cart:reload'));
                 })
                 .catch(function() {
