@@ -156,6 +156,28 @@
           "newsletter"
         ],
         "settings": {}
+      },
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "blocks": {
+          "message_NAcdVm": {
+            "type": "message",
+            "settings": {
+              "text": "<p>Vakantiegeld sale! 10% korting op alle items</p>",
+              "link": ""
+            }
+          }
+        },
+        "block_order": [
+          "message_NAcdVm"
+        ],
+        "settings": {
+          "bg_color": "#c97b5a",
+          "text_color": "#ffffff",
+          "font_size": 13,
+          "rotate_interval": 5,
+          "dismissible": true
+        }
       }
     },
     "content_for_index": [],
