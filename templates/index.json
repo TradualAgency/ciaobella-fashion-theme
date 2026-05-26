@@ -124,7 +124,7 @@
             "button_url": "shopify://collections/nieuw",
             "button_size": "btn--large",
             "button_style": "hero__btn btn",
-            "button_color": "btn--primary"
+            "button_color": "btn--accent"
           }
         }
       },
