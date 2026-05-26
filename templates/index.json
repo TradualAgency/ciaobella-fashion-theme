@@ -105,27 +105,26 @@
         "1657878759e9a470c2-0": {
           "type": "heading",
           "settings": {
-            "heading": "<p></p>",
+            "heading": "<p>Vakantiegeld sale is nu live</p>",
             "text_size": 10
           }
         },
         "1657878759e9a470c2-1": {
           "type": "text",
           "settings": {
-            "text": "<p></p>",
+            "text": "<p>10% korting op alle items</p>",
             "text_size": 6,
             "text_columns": 1
           }
         },
         "1657878759e9a470c2-2": {
           "type": "button",
-          "disabled": true,
           "settings": {
-            "button_text": "",
-            "button_url": "",
+            "button_text": "Shop nu",
+            "button_url": "shopify://collections/nieuw",
             "button_size": "btn--large",
             "button_style": "hero__btn btn",
-            "button_color": "btn--white"
+            "button_color": "btn--primary"
           }
         }
       },
@@ -135,15 +134,15 @@
         "1657878759e9a470c2-2"
       ],
       "settings": {
-        "image": "shopify://shop_images/IMG_7422.jpg",
-        "mobile_image": "shopify://shop_images/NEW_BELLA_DROP_0f091d09-e916-447c-85ea-ac681a69ab60.jpg",
+        "image": "shopify://shop_images/hero-cioaobella-vakantiegeld.png",
+        "mobile_image": "shopify://shop_images/hero-email.jpg",
         "image_link": "shopify://collections/nieuw",
-        "bg_position": "center-center",
-        "height": "use_image",
+        "bg_position": "center-top",
+        "height": "use_pixels_650",
         "overlay_opacity": 0,
-        "overlay_color": "#000000",
-        "flex_align": "align--middle-left",
-        "align_text": "text-left",
+        "overlay_color": "#1c1a18",
+        "flex_align": "align--middle-center",
+        "align_text": "text-center",
         "color": "text--white",
         "color_bg": "hero__content--transparent",
         "width": "wrapper",
