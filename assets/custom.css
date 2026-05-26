@@ -50,3 +50,30 @@
   font-size: 10px;
   line-height: 1;
 }
+
+/* Accent button (#C97B5A) */
+.btn--accent.btn,
+.shopify-payment-button .btn--accent.shopify-payment-button__button--unbranded,
+.product__form__outer:not(.product__form--buybutton) .btn--accent.product__submit__add {
+  --btn-bg: #C97B5A;
+  --btn-text: #FFFFFF;
+  --btn-bg-hover: #B86A4A;
+  --btn-text-hover: #FFFFFF;
+  --btn-shadow: rgb(201 123 90 / 25%);
+}
+
+.btn--accent.btn--soft {
+  --btn-bg: rgb(201 123 90 / 12%);
+  --btn-text: #C97B5A;
+  --btn-bg-hover: rgb(201 123 90 / 20%);
+  --btn-text-hover: #C97B5A;
+}
+
+.btn--accent.btn--outline {
+  --btn-bg: transparent;
+  --btn-text: #C97B5A;
+  --btn-border: #C97B5A;
+  --btn-bg-hover: #C97B5A;
+  --btn-text-hover: #FFFFFF;
+  --btn-border-hover: #C97B5A;
+}
