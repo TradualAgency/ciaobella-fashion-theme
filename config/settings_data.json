@@ -62,6 +62,7 @@
     "product_background_grey": true,
     "badge_sale": true,
     "badge_sale_discount": false,
+    "color_badge_text": "#1c1a18",
     "product_grid_show_rating": false,
     "currency_code_enable": false,
     "favicon": "shopify://shop_images/FavIcon.png",
