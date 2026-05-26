@@ -236,8 +236,8 @@
             "collection_image": "shopify://shop_images/CCF49175-C007-4DED-BDD2-9014DB1EB651.jpg",
             "bg_position": "center-center",
             "link_override": "shopify://collections/truien-vesten",
-            "content_color": "#333333",
-            "content_bg": "#f7f7f7"
+            "content_color": "#ffffff",
+            "content_bg": "#c97b5a"
           }
         },
         "default-collection-grid-0": {
@@ -248,8 +248,8 @@
             "collection_image": "shopify://shop_images/03A165F3-522A-4913-A70E-59E9DD94BC83.jpg",
             "bg_position": "center-center",
             "link_override": "shopify://collections/sets",
-            "content_color": "#333333",
-            "content_bg": "#f7f7f7"
+            "content_color": "#ffffff",
+            "content_bg": "#c97b5a"
           }
         },
         "default-collection-grid-1": {
@@ -260,8 +260,8 @@
             "collection_image": "shopify://shop_images/0FC09190-FB99-4D91-8CA0-8F6C3D0F97EA.jpg",
             "bg_position": "center-center",
             "link_override": "shopify://collections/jassen",
-            "content_color": "#333333",
-            "content_bg": "#f7f7f7"
+            "content_color": "#ffffff",
+            "content_bg": "#c97b5a"
           }
         },
         "default-collection-grid-2": {
@@ -355,9 +355,8 @@
       "blocks": {
         "ef10e325-e5e9-42a1-9442-17cf5150d909": {
           "type": "heading",
-          "disabled": true,
           "settings": {
-            "heading": "<p>SUMMER ESSENTIALS</p>",
+            "heading": "<p>Ciao bella X Easseli</p>",
             "text_size": 10
           }
         },
@@ -371,13 +370,12 @@
         },
         "ee84ec09-a62b-42d9-becd-88ba1b2f2825": {
           "type": "button",
-          "disabled": true,
           "settings": {
             "button_text": "SHOP NOW",
-            "button_url": "",
+            "button_url": "shopify://collections/easseli-going",
             "button_size": "",
             "button_style": "hero__btn btn",
-            "button_color": "btn--white"
+            "button_color": "btn--accent"
           }
         }
       },
@@ -394,8 +392,7 @@
           "grey-easseli-sweater-x-ciao-bella",
           "grey-easseli-pants-x-ciao-bella"
         ],
-        "image": "shopify://shop_images/Geel_Gloeilamp_Educatie_Mobile-First_Presentatie-3.jpg",
-        "mobile_image": "shopify://shop_images/Geel_Gloeilamp_Educatie_Mobile-First_Presentatie-3.jpg",
+        "image": "shopify://shop_images/IMG_1377.jpg",
         "image_link": "shopify://collections/alle-items",
         "bg_position": "center-center",
         "sticky_image_enable": false,
