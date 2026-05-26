@@ -163,7 +163,7 @@
           "message_NAcdVm": {
             "type": "message",
             "settings": {
-              "text": "<p><strong>Vakantiegeld sale! 10% korting op alle items</strong></p>",
+              "text": "<p><strong>10% korting op alles</strong> — wordt automatisch verrekend in de winkelwagen</p>",
               "link": "shopify://collections/all"
             }
           }
