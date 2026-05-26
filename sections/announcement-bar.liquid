@@ -1,0 +1,92 @@
+{%- if section.blocks.size > 0 -%}
+<section
+  class="announcement-bar"
+  data-section-id="{{ section.id }}"
+  data-section-type="announcement-bar"
+  data-rotate-interval="{{ section.settings.rotate_interval | times: 1000 }}"
+  data-dismissible="{{ section.settings.dismissible }}"
+  style="--ab-bg: {{ section.settings.bg_color }};
+         --ab-text: {{ section.settings.text_color }};
+         --ab-font-size: {{ section.settings.font_size }}px;">
+  <div class="announcement-bar__inner">
+    <div class="announcement-bar__messages" data-ab-messages>
+      {%- for block in section.blocks -%}
+        {%- assign tag = 'div' -%}
+        {%- if block.settings.link != blank -%}{%- assign tag = 'a' -%}{%- endif -%}
+        <{{ tag }}
+          class="announcement-bar__message{% if forloop.first %} is-active{% endif %}"
+          {% if tag == 'a' %}href="{{ block.settings.link }}"{% endif %}
+          data-ab-message
+          {{ block.shopify_attributes }}>
+          {{ block.settings.text }}
+        </{{ tag }}>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.dismissible -%}
+      <button type="button" class="announcement-bar__close" data-ab-close aria-label="{{ 'general.accessibility.close' | t | default: 'Close' }}">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      </button>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function() {
+    var bar = document.querySelector('.announcement-bar[data-section-id="{{ section.id }}"]');
+    if (!bar) return;
+    var storageKey = 'ab-dismissed-{{ section.id }}';
+    if (bar.dataset.dismissible === 'true' && localStorage.getItem(storageKey) === '1') {
+      bar.style.display = 'none';
+      return;
+    }
+    var closeBtn = bar.querySelector('[data-ab-close]');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() {
+        localStorage.setItem(storageKey, '1');
+        bar.style.display = 'none';
+      });
+    }
+    var messages = bar.querySelectorAll('[data-ab-message]');
+    var interval = parseInt(bar.dataset.rotateInterval, 10) || 5000;
+    if (messages.length > 1) {
+      var idx = 0;
+      setInterval(function() {
+        messages[idx].classList.remove('is-active');
+        idx = (idx + 1) % messages.length;
+        messages[idx].classList.add('is-active');
+      }, interval);
+    }
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Background color", "default": "#C97B5A" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#FFFFFF" },
+    { "type": "range", "id": "font_size", "label": "Font size", "min": 10, "max": 18, "step": 1, "unit": "px", "default": 13 },
+    { "type": "range", "id": "rotate_interval", "label": "Rotation interval", "min": 2, "max": 15, "step": 1, "unit": "s", "default": 5, "info": "Only used when multiple messages are added" },
+    { "type": "checkbox", "id": "dismissible", "label": "Show close button", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Gratis verzending vanaf €75 ✨</p>" },
+        { "type": "url", "id": "link", "label": "Link (optional)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement bar",
+      "blocks": [
+        { "type": "message" }
+      ]
+    }
+  ]
+}
+{% endschema %}
