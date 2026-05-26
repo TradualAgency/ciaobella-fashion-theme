@@ -512,7 +512,7 @@
           "type": "icon_block",
           "settings": {
             "icon_name": "icon-shipment",
-            "icon_color": "#ffc4f4",
+            "icon_color": "#c97b5a",
             "title": "Gratis Verzending",
             "text": "<p>Vanaf €100,-</p>"
           }
@@ -521,7 +521,7 @@
           "type": "icon_block",
           "settings": {
             "icon_name": "icon-share",
-            "icon_color": "#ffc4f4",
+            "icon_color": "#c97b5a",
             "title": "Bekend van TikTok",
             "text": "<p>@ciaobellafashion.nl</p>"
           }
@@ -530,7 +530,7 @@
           "type": "icon_block",
           "settings": {
             "icon_name": "icon-lock-shield",
-            "icon_color": "#ffc4f4",
+            "icon_color": "#c97b5a",
             "title": "Veilig Afrekenen",
             "text": "<p>Betaal met iDeal </p>"
           }
@@ -539,7 +539,7 @@
           "type": "icon_block",
           "settings": {
             "icon_name": "icon-phone",
-            "icon_color": "#ffc4f4",
+            "icon_color": "#c97b5a",
             "title": "Klantenservice",
             "text": "<p>Contact via de chat op de website!</p>"
           }
