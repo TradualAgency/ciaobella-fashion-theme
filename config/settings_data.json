@@ -54,7 +54,7 @@
     "free_shipping_limit": "75",
     "cart_custom_message_enable": false,
     "cart_color_bg": "palette--light bg--accent",
-    "cart_show_additional_buttons": false,
+    "cart_show_additional_buttons": true,
     "cart_upsell_collection": "upsell-cart",
     "search_articles": false,
     "collection_text_alignment": "text-center",
