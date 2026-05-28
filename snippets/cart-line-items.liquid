@@ -79,10 +79,12 @@
             {%- endif -%}
 
             {%- assign cart_storewide_on = false -%}
-            {%- if settings.storewide_discount_enable and settings.storewide_discount_percent > 0 and discounted == false and sale == false -%}
-              {%- assign cart_storewide_on = true -%}
+            {%- if settings.storewide_discount_enable and settings.storewide_discount_percent > 0 and sale == false -%}
               {%- assign cart_multiplier = 100 | minus: settings.storewide_discount_percent -%}
-              {%- assign cart_display_price = line_item.price | times: cart_multiplier | divided_by: 100 -%}
+              {%- assign cart_display_price = line_item.variant.price | times: cart_multiplier | divided_by: 100 -%}
+              {%- if line_item.variant.price > cart_display_price -%}
+                {%- assign cart_storewide_on = true -%}
+              {%- endif -%}
             {%- endif -%}
 
             {%- if sale -%}
@@ -93,20 +95,20 @@
                   {{ line_item.variant.compare_at_price | money }}
                 {% endif %}
               </del>
+            {%- elsif cart_storewide_on -%}
+              <del>
+                {% if settings.currency_code_enable %}
+                  {{ line_item.variant.price | money_with_currency }}
+                {% else %}
+                  {{ line_item.variant.price | money }}
+                {% endif %}
+              </del>
             {%- elsif discounted -%}
               <del>
                 {% if settings.currency_code_enable %}
                   {{ line_item.original_price | money_with_currency }}
                 {% else %}
                   {{ line_item.original_price | money }}
-                {% endif %}
-              </del>
-            {%- elsif cart_storewide_on -%}
-              <del>
-                {% if settings.currency_code_enable %}
-                  {{ line_item.price | money_with_currency }}
-                {% else %}
-                  {{ line_item.price | money }}
                 {% endif %}
               </del>
             {%- endif -%}
