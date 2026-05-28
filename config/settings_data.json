@@ -64,7 +64,7 @@
     "badge_sale_discount": false,
     "color_badge_text": "#1c1a18",
     "product_grid_show_rating": false,
-    "storewide_discount_enable": false,
+    "storewide_discount_enable": true,
     "currency_code_enable": false,
     "favicon": "shopify://shop_images/FavIcon.png",
     "cart_upsell_product_1": "gift-card",
