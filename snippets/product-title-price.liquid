@@ -54,7 +54,7 @@
     endif
   -%}
 
-  <div class="product__price__wrap">
+  <div class="product__price__wrap"{% if settings.storewide_discount_enable and settings.storewide_discount_percent > 0 %} data-storewide-discount="{{ settings.storewide_discount_percent }}"{% endif %}>
     <div class="product__price__main" data-price-wrapper>
       <span class="product__price">
         <span data-product-price {% if pdp_on_sale %} class="product__price--sale"{% endif %}>
@@ -131,6 +131,42 @@
       {% endif %}
     </div>
   </div>
+
+  {%- if settings.storewide_discount_enable and settings.storewide_discount_percent > 0 -%}
+    <script>
+      (function() {
+        if (window.__storewideDiscountInit) return;
+        window.__storewideDiscountInit = true;
+        var pct = {{ settings.storewide_discount_percent }};
+        document.addEventListener('theme:variant:change', function(e) {
+          var variant = e.detail && e.detail.variant;
+          if (!variant || pct <= 0) return;
+          var root = e.target;
+          while (root && root !== document.body && !root.querySelector('[data-storewide-discount]')) {
+            root = root.parentElement;
+          }
+          var priceWrap = root ? root.querySelector('[data-storewide-discount]') : document.querySelector('[data-storewide-discount]');
+          if (!priceWrap) return;
+          var priceEl = priceWrap.querySelector('[data-product-price]');
+          var compareEl = priceWrap.querySelector('.product__price--compare');
+          if (!priceEl) return;
+          var discountedPrice = Math.floor(variant.price * (100 - pct) / 100);
+          var displayCompare = (variant.compare_at_price && variant.compare_at_price > variant.price) ? variant.compare_at_price : variant.price;
+          var fmt = function(cents) {
+            var f = window.themeCurrency ? themeCurrency.formatMoney(cents, theme.moneyFormat) : String(cents);
+            return (window.theme && theme.settings && theme.settings.currency_code_enable) ? f + ' ' + theme.currencyCode : f;
+          };
+          priceEl.innerHTML = fmt(discountedPrice);
+          priceEl.classList.add('product__price--sale');
+          if (compareEl) {
+            compareEl.style.display = '';
+            var s = compareEl.querySelector('s');
+            if (s) s.innerHTML = fmt(displayCompare);
+          }
+        });
+      })();
+    </script>
+  {%- endif -%}
 
   {%- if template contains 'product' -%}
     <div class="product__shipping-info">
