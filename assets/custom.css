@@ -139,3 +139,10 @@ a.announcement-bar__message:hover {
   justify-content: center;
 }
 .announcement-bar__close:hover { opacity: 1; }
+
+/* Sale / korting prijs rood tonen */
+.price_wrapper.on-sale,
+.product__price--sale,
+.upsell__price.sale .new-price {
+  color: #e63131;
+}
