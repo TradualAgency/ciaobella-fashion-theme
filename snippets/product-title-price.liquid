@@ -133,35 +133,60 @@
   </div>
 
   {%- if settings.storewide_discount_enable and settings.storewide_discount_percent > 0 -%}
+    {%- assign sw_pct = settings.storewide_discount_percent -%}
+    {%- assign sw_multiplier = 100 | minus: sw_pct -%}
+    <script type="application/json" data-storewide-variant-prices>
+      {
+        {%- for variant in product.variants -%}
+          {%- assign vp = variant.price -%}
+          {%- assign vc = variant.compare_at_price -%}
+          {%- assign vd = vp | times: sw_multiplier | divided_by: 100 -%}
+          {%- if vc == blank or vc < vp -%}
+            {%- assign vr = vp -%}
+          {%- else -%}
+            {%- assign vr = vc -%}
+          {%- endif -%}
+          "{{ variant.id }}": {
+            "price": "{% if settings.currency_code_enable %}{{ vd | money_with_currency }}{% else %}{{ vd | money }}{% endif %}",
+            "compare": "{% if settings.currency_code_enable %}{{ vr | money_with_currency }}{% else %}{{ vr | money }}{% endif %}",
+            "on_sale": {% if vr > vd %}true{% else %}false{% endif %}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      }
+    </script>
     <script>
       (function() {
         if (window.__storewideDiscountInit) return;
         window.__storewideDiscountInit = true;
-        var pct = {{ settings.storewide_discount_percent }};
         document.addEventListener('theme:variant:change', function(e) {
           var variant = e.detail && e.detail.variant;
-          if (!variant || pct <= 0) return;
+          if (!variant) return;
           var root = e.target;
           while (root && root !== document.body && !root.querySelector('[data-storewide-discount]')) {
             root = root.parentElement;
           }
-          var priceWrap = root ? root.querySelector('[data-storewide-discount]') : document.querySelector('[data-storewide-discount]');
+          var priceWrap = (root && root !== document.body) ? root.querySelector('[data-storewide-discount]') : document.querySelector('[data-storewide-discount]');
           if (!priceWrap) return;
+          var pricesEl = document.querySelector('[data-storewide-variant-prices]');
+          if (!pricesEl) return;
+          var prices;
+          try { prices = JSON.parse(pricesEl.textContent); } catch(_) { return; }
+          var vp = prices[String(variant.id)];
+          if (!vp) return;
           var priceEl = priceWrap.querySelector('[data-product-price]');
           var compareEl = priceWrap.querySelector('.product__price--compare');
           if (!priceEl) return;
-          var discountedPrice = Math.floor(variant.price * (100 - pct) / 100);
-          var displayCompare = (variant.compare_at_price && variant.compare_at_price > variant.price) ? variant.compare_at_price : variant.price;
-          var fmt = function(cents) {
-            var f = window.themeCurrency ? themeCurrency.formatMoney(cents, theme.moneyFormat) : String(cents);
-            return (window.theme && theme.settings && theme.settings.currency_code_enable) ? f + ' ' + theme.currencyCode : f;
-          };
-          priceEl.innerHTML = fmt(discountedPrice);
-          priceEl.classList.add('product__price--sale');
-          if (compareEl) {
-            compareEl.style.display = '';
-            var s = compareEl.querySelector('s');
-            if (s) s.innerHTML = fmt(displayCompare);
+          priceEl.innerHTML = vp.price;
+          if (vp.on_sale) {
+            priceEl.classList.add('product__price--sale');
+            if (compareEl) {
+              compareEl.style.display = '';
+              var s = compareEl.querySelector('s');
+              if (s) s.innerHTML = vp.compare;
+            }
+          } else {
+            priceEl.classList.remove('product__price--sale');
+            if (compareEl) compareEl.style.display = 'none';
           }
         });
       })();
