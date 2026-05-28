@@ -14,8 +14,24 @@
 {%- liquid
   assign current_variant = product.first_available_variant
 
+  assign src_price = product.price
+  assign src_compare = product.compare_at_price
+  assign storewide_pct = settings.storewide_discount_percent | default: 0
+  if settings.storewide_discount_enable and storewide_pct > 0
+    assign multiplier = 100 | minus: storewide_pct
+    assign display_price = src_price | times: multiplier | divided_by: 100
+    if src_compare == blank or src_compare < src_price
+      assign display_compare = src_price
+    else
+      assign display_compare = src_compare
+    endif
+  else
+    assign display_price = src_price
+    assign display_compare = src_compare
+  endif
+
   assign on_sale = false
-  if product.compare_at_price > product.price
+  if display_compare > display_price
     assign on_sale = true
   endif
 
@@ -41,13 +57,13 @@
     if settings.badge_sale_discount
       if settings.badge_sale_type == 'dollar'
         if settings.currency_code_enable
-          assign sale_badge_content = product.compare_at_price | minus: product.price | money_with_currency
+          assign sale_badge_content = display_compare | minus: display_price | money_with_currency
         else
-          assign sale_badge_content = product.compare_at_price | minus: product.price | money_without_trailing_zeros
+          assign sale_badge_content = display_compare | minus: display_price | money_without_trailing_zeros
         endif
       else
-        assign difference = product.compare_at_price | minus: product.price
-        assign percent_off = difference | times: 1.0 | divided_by: product.compare_at_price | times: 100
+        assign difference = display_compare | minus: display_price
+        assign percent_off = difference | times: 1.0 | divided_by: display_compare | times: 100
         assign sale_badge_content = percent_off | floor | append: '%'
       endif
       assign save_word = 'products.product.save' | t | append: ' '
@@ -123,18 +139,18 @@
         {% endif %}
 
         {%- if settings.currency_code_enable -%}
-          {{ product.price | money_with_currency }}
+          {{ display_price | money_with_currency }}
         {%- else -%}
-          {{ product.price | money }}
+          {{ display_price | money }}
         {%- endif -%}
 
         {% if on_sale %}
           <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
           <s>
             {%- if settings.currency_code_enable -%}
-              {{ product.compare_at_price | money_with_currency }}
+              {{ display_compare | money_with_currency }}
             {%- else -%}
-              {{ product.compare_at_price | money }}
+              {{ display_compare | money }}
             {%- endif -%}
           </s>
         {% endif %}

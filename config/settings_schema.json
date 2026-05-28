@@ -831,6 +831,30 @@
         "id": "product_grid_show_rating_count",
         "label": "Show rating count",
         "default": false
+      },
+      {
+        "type": "header",
+        "content": "Storewide korting weergeven"
+      },
+      {
+        "type": "paragraph",
+        "content": "Toon de automatische winkelkorting al bij de prijs zodat de bezoeker de korting ziet vóór de checkout. De originele prijs wordt doorgestreept, de berekende prijs ernaast. Zorg dat het percentage overeenkomt met de daadwerkelijke automatische korting in Shopify."
+      },
+      {
+        "type": "checkbox",
+        "id": "storewide_discount_enable",
+        "label": "Storewide korting tonen bij prijzen",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "storewide_discount_percent",
+        "label": "Kortingspercentage",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "%",
+        "default": 10
       }
     ]
   },

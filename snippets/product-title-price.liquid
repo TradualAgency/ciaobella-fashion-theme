@@ -32,17 +32,51 @@
     <p class="product__cutline">{{ product.metafields.theme.cutline.value }}</p>
   {%- endif -%}
 
+  {%- liquid
+    assign src_price = current_variant.price
+    assign src_compare = current_variant.compare_at_price
+    assign storewide_pct = settings.storewide_discount_percent | default: 0
+    if settings.storewide_discount_enable and storewide_pct > 0
+      assign multiplier = 100 | minus: storewide_pct
+      assign display_price = src_price | times: multiplier | divided_by: 100
+      if src_compare == blank or src_compare < src_price
+        assign display_compare = src_price
+      else
+        assign display_compare = src_compare
+      endif
+    else
+      assign display_price = src_price
+      assign display_compare = src_compare
+    endif
+    assign pdp_on_sale = false
+    if display_compare > display_price
+      assign pdp_on_sale = true
+    endif
+  -%}
+
   <div class="product__price__wrap">
     <div class="product__price__main" data-price-wrapper>
       <span class="product__price">
-        <span data-product-price {% if current_variant.compare_at_price > current_variant.price %} class="product__price--sale"{% endif %}>
+        <span data-product-price {% if pdp_on_sale %} class="product__price--sale"{% endif %}>
           {%- if settings.currency_code_enable -%}
-            {{ current_variant.price | money_with_currency }}
+            {{ display_price | money_with_currency }}
           {%- else -%}
-            {{ current_variant.price | money }}
+            {{ display_price | money }}
           {%- endif -%}
         </span>
       </span>
+
+      {%- if pdp_on_sale -%}
+        <span class="product__price--compare">
+          <s>
+            {%- if settings.currency_code_enable -%}
+              {{ display_compare | money_with_currency }}
+            {%- else -%}
+              {{ display_compare | money }}
+            {%- endif -%}
+          </s>
+        </span>
+      {%- endif -%}
 
       <span data-price-off class="product__price--off hide">
         <span data-price-off-type>{{ 'products.product.sale' | t }}</span>

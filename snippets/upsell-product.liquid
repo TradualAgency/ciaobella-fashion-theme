@@ -45,22 +45,44 @@
                   <p class="upsell__variant-title">{{ upsell_variant.title | replace: '/', '<span>&nbsp;</span>' }}</p>
                 {%- endunless -%}
 
-                <p class="upsell__price {% unless upsell_variant.available %}hide{% endunless %} {% if upsell_variant.compare_at_price > upsell_variant.price %} sale{% endif %}">
+                {%- liquid
+                  assign src_price = upsell_variant.price
+                  assign src_compare = upsell_variant.compare_at_price
+                  assign storewide_pct = settings.storewide_discount_percent | default: 0
+                  if settings.storewide_discount_enable and storewide_pct > 0
+                    assign multiplier = 100 | minus: storewide_pct
+                    assign upsell_display_price = src_price | times: multiplier | divided_by: 100
+                    if src_compare == blank or src_compare < src_price
+                      assign upsell_display_compare = src_price
+                    else
+                      assign upsell_display_compare = src_compare
+                    endif
+                  else
+                    assign upsell_display_price = src_price
+                    assign upsell_display_compare = src_compare
+                  endif
+                  assign upsell_on_sale = false
+                  if upsell_display_compare > upsell_display_price
+                    assign upsell_on_sale = true
+                  endif
+                -%}
+
+                <p class="upsell__price {% unless upsell_variant.available %}hide{% endunless %}{% if upsell_on_sale %} sale{% endif %}">
                   <span class="new-price">
                     {{ 'products.upsell.get_for' | t }}
                     {% if settings.currency_code_enable %}
-                      {{ upsell_variant.price | money_with_currency }}
+                      {{ upsell_display_price | money_with_currency }}
                     {% else %}
-                      {{ upsell_variant.price | money }}
+                      {{ upsell_display_price | money }}
                     {% endif %}
                   </span>
 
-                  {%- if upsell_variant.compare_at_price > upsell_variant.price -%}
+                  {%- if upsell_on_sale -%}
                     <span class="old-price">
                       {% if settings.currency_code_enable %}
-                        {{ upsell_variant.compare_at_price | money_with_currency }}
+                        {{ upsell_display_compare | money_with_currency }}
                       {% else %}
-                        {{ upsell_variant.compare_at_price | money }}
+                        {{ upsell_display_compare | money }}
                       {% endif %}
                     </span>
                   {%- endif -%}
