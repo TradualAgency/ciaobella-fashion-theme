@@ -78,6 +78,13 @@
               {%- assign sale = true -%}
             {%- endif -%}
 
+            {%- assign cart_storewide_on = false -%}
+            {%- if settings.storewide_discount_enable and settings.storewide_discount_percent > 0 and discounted == false and sale == false -%}
+              {%- assign cart_storewide_on = true -%}
+              {%- assign cart_multiplier = 100 | minus: settings.storewide_discount_percent -%}
+              {%- assign cart_display_price = line_item.price | times: cart_multiplier | divided_by: 100 -%}
+            {%- endif -%}
+
             {%- if sale -%}
               <del>
                 {% if settings.currency_code_enable %}
@@ -86,13 +93,20 @@
                   {{ line_item.variant.compare_at_price | money }}
                 {% endif %}
               </del>
-            {%- endif -%}
-            {%- if discounted -%}
+            {%- elsif discounted -%}
               <del>
                 {% if settings.currency_code_enable %}
                   {{ line_item.original_price | money_with_currency }}
                 {% else %}
                   {{ line_item.original_price | money }}
+                {% endif %}
+              </del>
+            {%- elsif cart_storewide_on -%}
+              <del>
+                {% if settings.currency_code_enable %}
+                  {{ line_item.price | money_with_currency }}
+                {% else %}
+                  {{ line_item.price | money }}
                 {% endif %}
               </del>
             {%- endif -%}
@@ -103,6 +117,14 @@
                   {{ line_item.final_price | money_with_currency }}
                 {% else %}
                   {{ line_item.final_price | money }}
+                {% endif %}
+              </mark>
+            {%- elsif cart_storewide_on -%}
+              <mark>
+                {% if settings.currency_code_enable %}
+                  {{ cart_display_price | money_with_currency }}
+                {% else %}
+                  {{ cart_display_price | money }}
                 {% endif %}
               </mark>
             {%- else -%}
