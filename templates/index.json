@@ -112,7 +112,7 @@
         "1657878759e9a470c2-2": {
           "type": "button",
           "settings": {
-            "button_text": "Shop nu",
+            "button_text": "Shop nieuw",
             "button_url": "shopify://collections/nieuw",
             "button_size": "btn--large",
             "button_style": "hero__btn btn",
