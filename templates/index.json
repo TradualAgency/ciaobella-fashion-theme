@@ -105,16 +105,8 @@
         "1657878759e9a470c2-0": {
           "type": "heading",
           "settings": {
-            "heading": "<p><strong>VAKANTIEGELD SALE IS NU LIVE</strong></p>",
+            "heading": "<p><strong>Zomer collectie</strong></p>",
             "text_size": 10
-          }
-        },
-        "1657878759e9a470c2-1": {
-          "type": "text",
-          "settings": {
-            "text": "<p><strong>10% korting op alle items</strong></p>",
-            "text_size": 6,
-            "text_columns": 1
           }
         },
         "1657878759e9a470c2-2": {
@@ -130,7 +122,6 @@
       },
       "block_order": [
         "1657878759e9a470c2-0",
-        "1657878759e9a470c2-1",
         "1657878759e9a470c2-2"
       ],
       "settings": {
