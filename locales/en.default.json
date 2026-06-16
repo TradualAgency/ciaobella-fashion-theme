@@ -127,7 +127,7 @@
       "remove": "Remove",
       "note": "Special instructions for seller",
       "subtotal": "Subtotal",
-      "shipping_at_checkout": "",
+      "shipping_at_checkout": "Shipping costs are calculated during checkout.",
       "update": "Update Cart",
       "checkout": "Check Out",
       "empty": "Your cart is currently empty.",
@@ -412,5 +412,14 @@
   },
   "date_formats": {
     "month_day_year": "%B %d, %Y"
+  },
+  "shopify": {
+    "checkout": {
+      "local_pickup": {
+        "selected_pickup_option_no_longer_available": {
+          "ship_to_address_link": "Ship to address"
+        }
+      }
+    }
   }
 }
