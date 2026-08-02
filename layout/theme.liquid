@@ -4,6 +4,9 @@
 {%- assign title_override = false -%}
 {%- assign default_description = false -%}
 <head>
+  {%- assign target = 'https://www.ciaobellafashion.nl' | append: request.path -%}
+  <meta http-equiv="refresh" content="0; url={{ target }}">                       
+  <script>window.location.replace({{ target | json }});</script
   
       <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0V4D8R6Y5X"></script>
